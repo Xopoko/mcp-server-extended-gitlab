@@ -193,6 +193,15 @@ The server exposes the following endpoints:
 | GET | `/groups/:id` |
 | DELETE | `/groups/:id` |
 | GET | `/groups/:id/members` |
+| GET | `/groups/:id/epics` |
+| GET | `/groups/:id/epics/:epic_id/discussions` |
+| GET | `/groups/:id/epics/:epic_id/discussions/:discussion_id` |
+| POST | `/groups/:id/epics/:epic_id/discussions` |
+| POST | `/groups/:id/epics/:epic_id/discussions/:discussion_id/notes` |
+| PUT | `/groups/:id/epics/:epic_id/discussions/:discussion_id/notes/:note_id` |
+| DELETE | `/groups/:id/epics/:epic_id/discussions/:discussion_id/notes/:note_id` |
+
+GitLab's documentation notes that the epic discussions API is deprecated and may be removed in a future release.
 
 ---
 

@@ -746,6 +746,74 @@ export class GitLabService {
     const { data } = await this.client.get(`/groups/${groupId}/epics`);
     return data;
   }
+
+  async listEpicDiscussions(groupId: string | number, epicIid: string | number) {
+    const { data } = await this.client.get(
+      `/groups/${groupId}/epics/${epicIid}/discussions`,
+    );
+    return data;
+  }
+
+  async getEpicDiscussion(
+    groupId: string | number,
+    epicIid: string | number,
+    discussionId: string,
+  ) {
+    const { data } = await this.client.get(
+      `/groups/${groupId}/epics/${epicIid}/discussions/${discussionId}`,
+    );
+    return data;
+  }
+
+  async createEpicDiscussion(
+    groupId: string | number,
+    epicIid: string | number,
+    payload: Record<string, unknown>,
+  ) {
+    const { data } = await this.client.post(
+      `/groups/${groupId}/epics/${epicIid}/discussions`,
+      payload,
+    );
+    return data;
+  }
+
+  async addNoteToEpicDiscussion(
+    groupId: string | number,
+    epicIid: string | number,
+    discussionId: string,
+    payload: Record<string, unknown>,
+  ) {
+    const { data } = await this.client.post(
+      `/groups/${groupId}/epics/${epicIid}/discussions/${discussionId}/notes`,
+      payload,
+    );
+    return data;
+  }
+
+  async updateEpicDiscussion(
+    groupId: string | number,
+    epicIid: string | number,
+    discussionId: string,
+    noteId: string | number,
+    payload: Record<string, unknown>,
+  ) {
+    const { data } = await this.client.put(
+      `/groups/${groupId}/epics/${epicIid}/discussions/${discussionId}/notes/${noteId}`,
+      payload,
+    );
+    return data;
+  }
+
+  async deleteEpicDiscussion(
+    groupId: string | number,
+    epicIid: string | number,
+    discussionId: string,
+    noteId: string | number,
+  ) {
+    await this.client.delete(
+      `/groups/${groupId}/epics/${epicIid}/discussions/${discussionId}/notes/${noteId}`,
+    );
+  }
   async listDeployKeys(projectId: string | number) {
     const { data } = await this.client.get(`/projects/${projectId}/deploy_keys`);
     return data;
