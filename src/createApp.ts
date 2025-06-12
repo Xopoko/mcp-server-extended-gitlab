@@ -509,6 +509,90 @@ export function createApp() {
     }
   });
 
+  app.get('/projects/:id/issues/:iid/discussions', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(await svc.listIssueDiscussions(req.params.id, req.params.iid));
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.get('/projects/:id/issues/:iid/discussions/:discussionId', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(
+        await svc.getIssueDiscussion(
+          req.params.id,
+          req.params.iid,
+          req.params.discussionId,
+        ),
+      );
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.post('/projects/:id/issues/:iid/discussions', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      const discussion = await svc.createIssueDiscussion(
+        req.params.id,
+        req.params.iid,
+        req.body,
+      );
+      res.status(201).json(discussion);
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.post('/projects/:id/issues/:iid/discussions/:discussionId/notes', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      const note = await svc.addNoteToIssueDiscussion(
+        req.params.id,
+        req.params.iid,
+        req.params.discussionId,
+        req.body,
+      );
+      res.status(201).json(note);
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.put('/projects/:id/issues/:iid/discussions/:discussionId/notes/:noteId', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      const note = await svc.updateIssueDiscussion(
+        req.params.id,
+        req.params.iid,
+        req.params.discussionId,
+        req.params.noteId,
+        req.body,
+      );
+      res.json(note);
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.delete('/projects/:id/issues/:iid/discussions/:discussionId/notes/:noteId', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      await svc.deleteIssueDiscussion(
+        req.params.id,
+        req.params.iid,
+        req.params.discussionId,
+        req.params.noteId,
+      );
+      res.status(204).end();
+    } catch (err) {
+      next(err);
+    }
+  });
+
   // List discussions of a merge request
   app.get('/projects/:id/merge_requests/:iid/discussions', async (req, res, next: NextFunction) => {
     try {

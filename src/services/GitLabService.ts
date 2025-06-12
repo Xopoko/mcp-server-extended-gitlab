@@ -329,6 +329,77 @@ export class GitLabService {
     return data;
   }
 
+  async listIssueDiscussions(
+    projectId: string | number,
+    issueIid: string | number,
+  ) {
+    const { data } = await this.client.get(
+      `/projects/${projectId}/issues/${issueIid}/discussions`,
+    );
+    return data;
+  }
+
+  async getIssueDiscussion(
+    projectId: string | number,
+    issueIid: string | number,
+    discussionId: string,
+  ) {
+    const { data } = await this.client.get(
+      `/projects/${projectId}/issues/${issueIid}/discussions/${discussionId}`,
+    );
+    return data;
+  }
+
+  async createIssueDiscussion(
+    projectId: string | number,
+    issueIid: string | number,
+    payload: Record<string, unknown>,
+  ) {
+    const { data } = await this.client.post(
+      `/projects/${projectId}/issues/${issueIid}/discussions`,
+      payload,
+    );
+    return data;
+  }
+
+  async addNoteToIssueDiscussion(
+    projectId: string | number,
+    issueIid: string | number,
+    discussionId: string,
+    payload: Record<string, unknown>,
+  ) {
+    const { data } = await this.client.post(
+      `/projects/${projectId}/issues/${issueIid}/discussions/${discussionId}/notes`,
+      payload,
+    );
+    return data;
+  }
+
+  async updateIssueDiscussion(
+    projectId: string | number,
+    issueIid: string | number,
+    discussionId: string,
+    noteId: string | number,
+    payload: Record<string, unknown>,
+  ) {
+    const { data } = await this.client.put(
+      `/projects/${projectId}/issues/${issueIid}/discussions/${discussionId}/notes/${noteId}`,
+      payload,
+    );
+    return data;
+  }
+
+  async deleteIssueDiscussion(
+    projectId: string | number,
+    issueIid: string | number,
+    discussionId: string,
+    noteId: string | number,
+  ) {
+    await this.client.delete(
+      `/projects/${projectId}/issues/${issueIid}/discussions/${discussionId}/notes/${noteId}`,
+    );
+  }
+
   async getFile(projectId: string | number, filePath: string, ref: string) {
     const encodedPath = encodeURIComponent(filePath);
     const { data } = await this.client.get(
