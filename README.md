@@ -2,7 +2,7 @@
 
 A small server exposing selected GitLab REST API endpoints as tools for the [Model-Context-Protocol](https://github.com/modelcontextprotocol/). It is built with TypeScript and tested with Jest.
 
-| 🔖 Version | ![npm](https://img.shields.io/badge/project-v1.0.0-blue) |
+| 🔖 Version | ![npm](https://img.shields.io/badge/project-v1.0.2-blue) |
 |-----------|-----------------------------------------------|
 | 🛠 Build  | `npm run build` |
 | 🧪 Tests  | `npm test` |
