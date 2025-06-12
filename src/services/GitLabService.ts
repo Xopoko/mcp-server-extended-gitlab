@@ -46,6 +46,16 @@ export class GitLabService {
     return data;
   }
 
+  async listIssues(projectId: string | number) {
+    const { data } = await this.client.get(`/projects/${projectId}/issues`);
+    return data;
+  }
+
+  async createIssue(projectId: string | number, payload: unknown) {
+    const { data } = await this.client.post(`/projects/${projectId}/issues`, payload);
+    return data;
+  }
+
   async getFile(projectId: string | number, filePath: string, ref: string) {
     const encodedPath = encodeURIComponent(filePath);
     const { data } = await this.client.get(

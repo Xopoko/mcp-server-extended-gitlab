@@ -14,7 +14,7 @@ A small server exposing selected GitLab REST API endpoints as tools for the [Mod
 
 * **TypeScript 5** with strict compiler options.
 * **Express 5** server scaffold.
-* **GitLab integration** for merge requests, branches, commits, discussions and file content.
+* **GitLab integration** for merge requests, branches, commits, discussions, issues and file content.
 * **TDD-first** workflow – Jest + ts-jest preconfigured.
 * **Hot reload** in development via `nodemon`.
 * Uses the MCP TypeScript SDK via a local path dependency.
@@ -114,6 +114,8 @@ The server exposes the following endpoints:
 - `GET /projects/:id/files/<path>?ref=<branch>`
 - `GET /projects/:id/branches`
 - `GET /projects/:id/commits`
+- `GET /projects/:id/issues`
+- `POST /projects/:id/issues`
 
 Additionally `/tool/hello` demonstrates how to add custom tools.
 
