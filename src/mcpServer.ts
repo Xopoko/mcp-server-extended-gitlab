@@ -2,12 +2,18 @@
 const pkg = require('../package.json');
 
 export async function createMcpServer({ port }: { port?: number } = {}) {
-  const { MCPServer } = await import('mcp-framework');
+  let MCPServer: any;
+  try {
+    ({ MCPServer } = require('mcp-framework'));
+  } catch {
+    const importer = new Function('p', 'return import(p)');
+    ({ MCPServer } = await importer('mcp-framework'));
+  }
   const envPort = Number(process.env.PORT);
   const server = new MCPServer({
     name: pkg.name,
     version: pkg.version,
-    basePath: './dist',
+    basePath: __dirname,
     transport: {
       type: 'sse',
       options: {
