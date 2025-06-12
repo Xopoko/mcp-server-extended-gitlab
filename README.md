@@ -101,12 +101,22 @@ request(app)
 
 ```ts
 // src/tools/myTool.ts (example)
-export function registerMyTool(app: express.Express) {
-  app.post('/tool/myTool', (req, res) => {
-    // tool logic …
-  });
-}
+  export function registerMyTool(app: express.Express) {
+    app.post('/tool/myTool', (req, res) => {
+      // tool logic …
+    });
+  }
 ```
+
+## GitLab Routes
+
+The server exposes a subset of GitLab REST API endpoints:
+
+- `GET /projects/:id/merge_requests`
+- `GET /projects/:id/merge_requests/:iid/discussions`
+- `GET /projects/:id/files/<path>?ref=<branch>`
+- `GET /projects/:id/branches`
+- `GET /projects/:id/commits`
 
 ---
 

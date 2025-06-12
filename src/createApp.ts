@@ -20,6 +20,26 @@ export function createApp() {
     }
   });
 
+  // List branches of a project
+  app.get('/projects/:id/branches', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(await svc.listBranches(req.params.id));
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  // List commits of a project
+  app.get('/projects/:id/commits', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(await svc.listCommits(req.params.id));
+    } catch (err) {
+      next(err);
+    }
+  });
+
   // List discussions of a merge request
   app.get('/projects/:id/merge_requests/:iid/discussions', async (req, res, next: NextFunction) => {
     try {
@@ -33,7 +53,9 @@ export function createApp() {
   // Raw file content – RegExp route avoids path-to-regexp parsing issues
   app.get(/^\/projects\/(\d+)\/files\/(.+)$/, async (req, res, next: NextFunction) => {
     try {
-      const [projectId, filePath] = req.params as unknown as [string, string];
+      const params = req.params as unknown as { 0: string; 1: string };
+      const projectId = params[0];
+      const filePath = params[1];
       const ref = typeof req.query.ref === 'string' ? req.query.ref : 'main';
       const svc = new GitLabService();
       const content = await svc.getFile(projectId, filePath, ref);

@@ -10,6 +10,7 @@ export class GitLabService {
     this.client = axios.create({
       baseURL: this.baseUrl,
       headers: { 'PRIVATE-TOKEN': this.token },
+      proxy: false,
     });
   }
 
@@ -20,6 +21,16 @@ export class GitLabService {
 
   async listDiscussions(projectId: string | number, mrIid: string | number) {
     const { data } = await this.client.get(`/projects/${projectId}/merge_requests/${mrIid}/discussions`);
+    return data;
+  }
+
+  async listBranches(projectId: string | number) {
+    const { data } = await this.client.get(`/projects/${projectId}/repository/branches`);
+    return data;
+  }
+
+  async listCommits(projectId: string | number) {
+    const { data } = await this.client.get(`/projects/${projectId}/repository/commits`);
     return data;
   }
 
