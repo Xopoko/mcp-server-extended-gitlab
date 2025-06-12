@@ -11,6 +11,15 @@ export function createApp() {
     res.status(200).json({ status: 'ok' });
   });
 
+  app.get('/personal_access_tokens', async (_req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(await svc.listPersonalAccessTokens());
+    } catch (err) {
+      next(err);
+    }
+  });
+
   app.post('/groups', async (req, res, next: NextFunction) => {
     try {
       const svc = new GitLabService();
@@ -48,6 +57,51 @@ export function createApp() {
     try {
       const svc = new GitLabService();
       res.json(await svc.listGroupMembers(req.params.id));
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.get('/groups/:id/epics', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(await svc.listGroupEpics(req.params.id));
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.get('/projects/:id/access_tokens', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(await svc.listProjectAccessTokens(req.params.id));
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.get('/projects/:id/access_requests', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(await svc.listProjectAccessRequests(req.params.id));
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.get('/groups/:id/access_tokens', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(await svc.listGroupAccessTokens(req.params.id));
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.get('/groups/:id/access_requests', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(await svc.listGroupAccessRequests(req.params.id));
     } catch (err) {
       next(err);
     }
@@ -172,6 +226,128 @@ export function createApp() {
       }
     },
   );
+
+  app.get('/projects/:id/deploy_keys', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(await svc.listDeployKeys(req.params.id));
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.post('/projects/:id/deploy_tokens', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      const token = await svc.createDeployToken(req.params.id, req.body);
+      res.status(201).json(token);
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.get('/projects/:id/deployments', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(await svc.listDeployments(req.params.id));
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.get('/projects/:id/registry/repositories', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(await svc.listRegistryRepositories(req.params.id));
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.get('/projects/:id/registry/protection/repository/rules', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(await svc.listRegistryProtectionRules(req.params.id));
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.post('/projects/:id/feature_flags', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      const flag = await svc.createFeatureFlag(req.params.id, req.body);
+      res.status(201).json(flag);
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.get('/projects/:id/feature_flags', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(await svc.listFeatureFlags(req.params.id));
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.delete('/projects/:id/feature_flags/:flagId', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      await svc.deleteFeatureFlag(req.params.id, req.params.flagId);
+      res.status(204).end();
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.get('/projects/:id/freeze_periods', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(await svc.listFreezePeriods(req.params.id));
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.post('/projects/:id/variables', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      const variable = await svc.createProjectVariable(req.params.id, req.body);
+      res.status(201).json(variable);
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.get('/projects/:id/variables', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(await svc.listProjectVariables(req.params.id));
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.delete('/projects/:id/variables/:key', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      await svc.deleteProjectVariable(req.params.id, req.params.key);
+      res.status(204).end();
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.get('/projects/:id/protected_branches', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(await svc.listProtectedBranches(req.params.id));
+    } catch (err) {
+      next(err);
+    }
+  });
 
   // List commits of a project
   app.get('/projects/:id/commits', async (req, res, next: NextFunction) => {
@@ -672,6 +848,16 @@ export function createApp() {
       const svc = new GitLabService();
       await svc.deleteTag(req.params.id, req.params.tag);
       res.status(204).end();
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.post('/api/graphql', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      const data = await svc.graphqlQuery(req.body);
+      res.json(data);
     } catch (err) {
       next(err);
     }

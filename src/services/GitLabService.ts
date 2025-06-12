@@ -512,4 +512,98 @@ export class GitLabService {
     const encoded = encodeURIComponent(tagName);
     await this.client.delete(`/projects/${projectId}/repository/tags/${encoded}`);
   }
+  async listProjectAccessTokens(projectId: string | number) {
+    const { data } = await this.client.get(`/projects/${projectId}/access_tokens`);
+    return data;
+  }
+
+  async listProjectAccessRequests(projectId: string | number) {
+    const { data } = await this.client.get(`/projects/${projectId}/access_requests`);
+    return data;
+  }
+
+  async listGroupAccessTokens(groupId: string | number) {
+    const { data } = await this.client.get(`/groups/${groupId}/access_tokens`);
+    return data;
+  }
+
+  async listGroupAccessRequests(groupId: string | number) {
+    const { data } = await this.client.get(`/groups/${groupId}/access_requests`);
+    return data;
+  }
+
+  async listGroupEpics(groupId: string | number) {
+    const { data } = await this.client.get(`/groups/${groupId}/epics`);
+    return data;
+  }
+  async listDeployKeys(projectId: string | number) {
+    const { data } = await this.client.get(`/projects/${projectId}/deploy_keys`);
+    return data;
+  }
+
+  async createDeployToken(projectId: string | number, payload: Record<string, unknown>) {
+    const { data } = await this.client.post(`/projects/${projectId}/deploy_tokens`, payload);
+    return data;
+  }
+
+  async listDeployments(projectId: string | number) {
+    const { data } = await this.client.get(`/projects/${projectId}/deployments`);
+    return data;
+  }
+  async listRegistryRepositories(projectId: string | number) {
+    const { data } = await this.client.get(`/projects/${projectId}/registry/repositories`);
+    return data;
+  }
+
+  async listRegistryProtectionRules(projectId: string | number) {
+    const { data } = await this.client.get(`/projects/${projectId}/registry/protection/repository/rules`);
+    return data;
+  }
+  async createFeatureFlag(projectId: string | number, payload: Record<string, unknown>) {
+    const { data } = await this.client.post(`/projects/${projectId}/feature_flags`, payload);
+    return data;
+  }
+
+  async listFeatureFlags(projectId: string | number) {
+    const { data } = await this.client.get(`/projects/${projectId}/feature_flags`);
+    return data;
+  }
+
+  async deleteFeatureFlag(projectId: string | number, flagId: string | number) {
+    await this.client.delete(`/projects/${projectId}/feature_flags/${flagId}`);
+  }
+
+  async listFreezePeriods(projectId: string | number) {
+    const { data } = await this.client.get(`/projects/${projectId}/freeze_periods`);
+    return data;
+  }
+  async createProjectVariable(projectId: string | number, payload: Record<string, unknown>) {
+    const { data } = await this.client.post(`/projects/${projectId}/variables`, payload);
+    return data;
+  }
+
+  async listProjectVariables(projectId: string | number) {
+    const { data } = await this.client.get(`/projects/${projectId}/variables`);
+    return data;
+  }
+
+  async deleteProjectVariable(projectId: string | number, key: string) {
+    const encoded = encodeURIComponent(key);
+    await this.client.delete(`/projects/${projectId}/variables/${encoded}`);
+  }
+
+  async listProtectedBranches(projectId: string | number) {
+    const { data } = await this.client.get(`/projects/${projectId}/protected_branches`);
+    return data;
+  }
+
+  async listPersonalAccessTokens() {
+    const { data } = await this.client.get(`/personal_access_tokens`);
+    return data;
+  }
+
+  async graphqlQuery(query: Record<string, unknown>) {
+    const { data } = await this.client.post(`/graphql`, query);
+    return data;
+  }
 }
