@@ -164,6 +164,19 @@ describe('GitLab merge request management endpoints', () => {
     expect(res.body).toEqual(mockData);
   });
 
+  it('unresolves a discussion', async () => {
+    const mockData = { id: 'abc', resolved: false };
+    nock(base)
+      .put('/api/v4/projects/123/merge_requests/1/discussions/abc/unresolve')
+      .reply(200, mockData);
+
+    const res = await request(app).put(
+      '/projects/123/merge_requests/1/discussions/abc/unresolve',
+    );
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual(mockData);
+  });
+
   it('returns a merge request note', async () => {
     const mockData = { id: 5, body: 'note' };
     nock(base)

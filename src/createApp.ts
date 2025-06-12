@@ -245,6 +245,24 @@ export function createApp() {
     }
   });
 
+  app.put(
+    '/projects/:id/merge_requests/:iid/discussions/:discussionId/unresolve',
+    async (req, res, next: NextFunction) => {
+      try {
+        const svc = new GitLabService();
+        res.json(
+          await svc.unresolveDiscussion(
+            req.params.id,
+            req.params.iid,
+            req.params.discussionId,
+          ),
+        );
+      } catch (err) {
+        next(err);
+      }
+    },
+  );
+
   app.get('/projects/:id/merge_requests/:iid/notes/:noteId', async (req, res, next: NextFunction) => {
     try {
       const svc = new GitLabService();
