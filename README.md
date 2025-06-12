@@ -177,6 +177,12 @@ The server exposes the following endpoints:
 | POST | `/projects/:id/issues/:issue_id/discussions/:discussion_id/notes` |
 | PUT | `/projects/:id/issues/:issue_id/discussions/:discussion_id/notes/:note_id` |
 | DELETE | `/projects/:id/issues/:issue_id/discussions/:discussion_id/notes/:note_id` |
+| GET | `/projects/:id/snippets/:snippet_id/discussions` |
+| GET | `/projects/:id/snippets/:snippet_id/discussions/:discussion_id` |
+| POST | `/projects/:id/snippets/:snippet_id/discussions` |
+| POST | `/projects/:id/snippets/:snippet_id/discussions/:discussion_id/notes` |
+| PUT | `/projects/:id/snippets/:snippet_id/discussions/:discussion_id/notes/:note_id` |
+| DELETE | `/projects/:id/snippets/:snippet_id/discussions/:discussion_id/notes/:note_id` |
 | POST | `/groups` |
 | GET | `/groups/:id` |
 | DELETE | `/groups/:id` |
