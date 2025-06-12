@@ -84,6 +84,17 @@ entry like the following:
 }
 ```
 
+### Running via STDIO
+
+You can run the server without any network transport using the STDIO mode.
+
+```bash
+npm run build
+npm run start:stdio
+```
+
+This starts an MCP server that communicates through standard input/output.
+
 
 ---
 
