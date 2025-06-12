@@ -1,6 +1,6 @@
 {
   "name": "mcp-server-extended-gitlab",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A server exposing GitLab REST APIs as Model-Context-Protocol (MCP) tools.",
   "main": "dist/server.js",
   "scripts": {
