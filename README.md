@@ -151,7 +151,7 @@ Additionally `/tool/hello` demonstrates how to add custom tools.
 ## 🏗 Building & Deployment
 
 ```bash
-npm run build      # compile to ./dist
+npm run build      # run "tsc && mcp-build" to compile and prepare ./dist
 npm start          # run compiled server
 ```
 
