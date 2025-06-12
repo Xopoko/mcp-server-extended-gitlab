@@ -42,7 +42,52 @@ Set the following variables to connect to your GitLab instance:
 ```bash
 GITLAB_BASE_URL=https://gitlab.example.com/api/v4
 GITLAB_TOKEN=your-private-token
+# optionally limit exposed tools
+# use a comma-separated list
+# TOOLS_INCLUDE=projects,merge_requests
+# or exclude certain tools
+# TOOLS_EXCLUDE=pipelines
+# TOOLS_INCLUDE takes precedence if both are set
 ```
+
+### Filtering Available Tools
+
+By default the server loads all GitLab tools. To restrict the available set you
+can provide an **include** or **exclude** list:
+
+- **Environment variables** – set `TOOLS_INCLUDE` or `TOOLS_EXCLUDE` to a comma-
+  separated list. If both are defined, `TOOLS_INCLUDE` wins.
+
+  ```bash
+  TOOLS_INCLUDE=projects,merge_requests npm run start:mcp
+  # or
+  TOOLS_EXCLUDE=pipelines npm run start:mcp
+  ```
+
+- **Programmatic API** – pass `includes` or `excludes` to `createMcpServer()`:
+
+  ```ts
+  import { createMcpServer } from 'mcp-server-extended-gitlab';
+
+  const server = await createMcpServer({ includes: ['projects', 'merge_requests'] });
+  await server.start();
+  ```
+
+- **Config file** – supply a JSON file when creating the server. Use the
+  `configPath` option pointing to a file like:
+
+  ```json
+  {
+    "includes": ["projects", "merge_requests"]
+  }
+  ```
+
+  ```ts
+  const server = await createMcpServer({ configPath: 'mcp.config.json' });
+  ```
+
+Use this when embedding the server in another application. Remember that the
+include list overrides the exclude list if both are supplied.
 
 
 
@@ -153,6 +198,7 @@ npm run start:mcp
 ```
 
 It listens on port `3000` (or `PORT`). Ensure `GITLAB_BASE_URL` and `GITLAB_TOKEN` are configured.
+Use `TOOLS_INCLUDE` or `TOOLS_EXCLUDE` to control which tools are loaded.
 
 ### Claude Desktop
 
@@ -167,7 +213,10 @@ It listens on port `3000` (or `PORT`). Ensure `GITLAB_BASE_URL` and `GITLAB_TOKE
   "mcpServers": {
     "gitlab-server": {
       "command": "node",
-      "args": ["/absolute/path/to/mcp-server-extended-gitlab/dist/mcpServer.js"]
+      "args": ["/absolute/path/to/mcp-server-extended-gitlab/dist/mcpServer.js"],
+      "env": {
+        "TOOLS_INCLUDE": "projects,merge_requests"
+      }
     }
   }
 }
@@ -180,7 +229,7 @@ After publishing the project to npm you can instead use:
   "mcpServers": {
     "gitlab-server": {
       "command": "npx",
-      "args": ["mcp-server-extended-gitlab"]
+      "args": ["mcp-server-extended-gitlab", "--includes=projects,merge_requests"]
     }
   }
 }
@@ -188,7 +237,7 @@ After publishing the project to npm you can instead use:
 
 ### Cursor
 
-1. Run `npm run start:mcp`.
+1. Run `npm run start:mcp` (append `-- --includes=projects,merge_requests` to limit tools).
 2. Create or edit `mcp_servers.json` in your Cursor data directory:
    - **macOS:** `~/Library/Application Support/Cursor/mcp_servers.json`
    - **Windows:** `%APPDATA%/Cursor/mcp_servers.json`
@@ -220,3 +269,4 @@ Issues and PRs are welcome! Please follow the existing coding style and include 
 ## 📜 License
 
 Released under the **MIT License**.
+
