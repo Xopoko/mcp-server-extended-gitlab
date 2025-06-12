@@ -9,12 +9,30 @@ Guidance for AI agents (and humans) who interact with this repository.
 * `/src`  – TypeScript source code for the MCP server.
   * `server.ts` – runtime entry point (`npm start`).
   * `bootstrapServer.ts` – **createApp()** factory; add new tool routes here or in sub-modules.
+  * `stdioServer.ts` – start the server over STDIO (no HTTP/SSE).
+  * `mcpServer.ts` – start the server with the MCP framework SSE transport.
 * `/tests` – Jest test suites (**ts-jest**) for TDD.
 * `/dist` – Compiled JavaScript output (`npm run build`).
-* `README.md` – User-level documentation.
+* `README.md` – User-level documentation and GitLab API reference.
 * `AGENTS.md` – This file (development & contribution guidance).
 
 Feel free to add extra folders such as `/docs` or `/scripts` as the project grows.
+
+---
+
+## ⚙️ Environment Setup
+
+1. **Node**: use Node.js 18 or later.
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Configure GitLab access in `.env` or the shell:
+   ```bash
+   GITLAB_BASE_URL=https://gitlab.example.com/api/v4
+   GITLAB_TOKEN=your-private-token
+   ```
+   These variables are required for both the server and test suites.
 
 ---
 
@@ -50,12 +68,14 @@ Tests must pass (CI will block otherwise).
 
 ## 🔧 Useful npm Scripts
 
-| Command          | Description                           |
-|------------------|---------------------------------------|
-| `npm test`       | Run full Jest suite                   |
-| `npm run dev`    | Hot-reload server via nodemon         |
-| `npm run build`  | Compile TypeScript to `/dist`         |
-| `npm start`      | Execute compiled server (`dist/`)     |
+| Command            | Description                                        |
+|--------------------|----------------------------------------------------|
+| `npm test`         | Run full Jest suite                                |
+| `npm run dev`      | Hot-reload server via nodemon                      |
+| `npm run build`    | Compile TypeScript to `/dist`                      |
+| `npm start`        | Execute compiled server (`dist/`)                  |
+| `npm run start:stdio` | Launch the STDIO-based server                    |
+| `npm run start:mcp`   | Launch the MCP framework SSE server              |
 
 ---
 
@@ -76,6 +96,7 @@ Tests must pass (CI will block otherwise).
 * Validate success: run `npm test` after modifications.
 * Follow TDD: create failing test → implement code → ensure tests green.
 * Persist new files with full paths; do **not** leave placeholders.
+* Use the `README.md` for examples of environment setup and available routes.
 
 ---
 
