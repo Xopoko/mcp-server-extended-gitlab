@@ -11,6 +11,7 @@ describe('GitHub release workflow', () => {
     expect(workflow).toHaveProperty('jobs.release');
     const steps = workflow.jobs.release.steps || [];
     const stepNames = steps.map((s: any) => s.name).filter(Boolean);
+    expect(stepNames).toContain('Run lint if script exists');
     expect(stepNames).toContain('Publish to npm');
   });
 });

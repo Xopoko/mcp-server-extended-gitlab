@@ -31,8 +31,13 @@ jobs:
           registry-url: https://registry.npmjs.org
           cache: 'npm'
       - run: npm ci
-      - run: npm run lint
-        if: exists('package.json') && ((npm pkg get scripts.lint || echo '') != '')
+      - name: Run lint if script exists
+        run: |
+          if [ -f package.json ] && [ "$(jq -r '.scripts.lint // empty' package.json)" != "" ]; then
+            npm run lint
+          else
+            echo "No lint script found, skipping."
+          fi
       - run: npm run build
       - run: npm test
       - name: Bump package version
