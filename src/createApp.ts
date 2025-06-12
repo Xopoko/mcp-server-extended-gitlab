@@ -520,11 +520,15 @@ export function createApp() {
     const id = randomUUID();
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Connection', 'keep-alive');
     res.flushHeaders();
 
     // inform client of the message endpoint
     res.write(`event: endpoint\n`);
     res.write(`data: /messages/${id}\n\n`);
+    if (typeof (res as any).flush === 'function') {
+      (res as any).flush();
+    }
 
     const keepAlive = setInterval(() => {
       res.write(`: keep-alive ${Date.now()}\n\n`);
@@ -547,6 +551,9 @@ export function createApp() {
     }
     client.res.write(`event: message\n`);
     client.res.write(`data: ${JSON.stringify(req.body)}\n\n`);
+    if (typeof (client.res as any).flush === 'function') {
+      (client.res as any).flush();
+    }
     res.status(204).end();
   });
 

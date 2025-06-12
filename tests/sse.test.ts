@@ -49,4 +49,23 @@ describe('SSE transport', () => {
       req.end();
     });
   });
+
+  it('keeps the connection alive', (done) => {
+    const app = createApp();
+    const server = app.listen(() => {
+      const { port } = server.address() as any;
+      http
+        .get({
+          hostname: '127.0.0.1',
+          port,
+          path: '/sse',
+          headers: { Accept: 'text/event-stream' },
+        })
+        .on('response', (res) => {
+          expect(res.headers.connection).toBe('keep-alive');
+          res.destroy();
+          server.close(() => done());
+        });
+    });
+  });
 });
