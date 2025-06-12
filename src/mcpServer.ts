@@ -2,12 +2,8 @@
 const pkg = require('../package.json');
 
 export async function createMcpServer({ port }: { port?: number } = {}) {
-  const { createRequire } = require('module');
-  const req = createRequire(__dirname);
-  // require direct path to bypass ESM loader in tests
-  const path = require('path');
-  const frameworkPath = path.join(__dirname, '..', 'node_modules', 'mcp-framework', 'dist', 'index.js');
-  const { MCPServer } = req(frameworkPath);
+  const { MCPServer } = await import('mcp-framework');
+  const envPort = Number(process.env.PORT);
   const server = new MCPServer({
     name: pkg.name,
     version: pkg.version,
@@ -15,7 +11,7 @@ export async function createMcpServer({ port }: { port?: number } = {}) {
     transport: {
       type: 'sse',
       options: {
-        port: port ?? (process.env.PORT ? parseInt(process.env.PORT, 10) : 3000),
+        port: port ?? (!Number.isNaN(envPort) ? envPort : 3000),
       },
     },
   });
