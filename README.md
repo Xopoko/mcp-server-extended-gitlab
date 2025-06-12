@@ -154,6 +154,10 @@ The server exposes the following endpoints:
 - `DELETE /projects/:id/merge_requests/:iid/notes/:note_id`
 - `PUT /projects/:id/merge_requests/:iid` (set labels)
 - `GET /projects/:id/files/<path>?ref=<branch>`
+- `POST /projects/:id/files/<path>`
+- `PUT /projects/:id/files/<path>`
+- `DELETE /projects/:id/files/<path>?branch=<branch>&commit_message=<msg>`
+- `GET /projects/:id/files?path=<path>&ref=<branch>`
 - `GET /projects/:id/branches`
 - `POST /projects/:id/branches`
 - `GET /projects/:id/branches/:branch`

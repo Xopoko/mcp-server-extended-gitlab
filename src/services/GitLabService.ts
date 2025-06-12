@@ -243,6 +243,55 @@ export class GitLabService {
     return data as string;
   }
 
+  async createFile(
+    projectId: string | number,
+    filePath: string,
+    payload: Record<string, unknown>,
+  ) {
+    const encodedPath = encodeURIComponent(filePath);
+    const { data } = await this.client.post(
+      `/projects/${projectId}/repository/files/${encodedPath}`,
+      payload,
+    );
+    return data;
+  }
+
+  async updateFile(
+    projectId: string | number,
+    filePath: string,
+    payload: Record<string, unknown>,
+  ) {
+    const encodedPath = encodeURIComponent(filePath);
+    const { data } = await this.client.put(
+      `/projects/${projectId}/repository/files/${encodedPath}`,
+      payload,
+    );
+    return data;
+  }
+
+  async deleteFile(
+    projectId: string | number,
+    filePath: string,
+    params: Record<string, unknown>,
+  ) {
+    const encodedPath = encodeURIComponent(filePath);
+    await this.client.delete(
+      `/projects/${projectId}/repository/files/${encodedPath}`,
+      { params },
+    );
+  }
+
+  async listFiles(
+    projectId: string | number,
+    params: Record<string, unknown>,
+  ) {
+    const { data } = await this.client.get(
+      `/projects/${projectId}/repository/tree`,
+      { params },
+    );
+    return data;
+  }
+
   async getMergeRequestNote(
     projectId: string | number,
     mrIid: string | number,

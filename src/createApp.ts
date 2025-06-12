@@ -366,6 +366,47 @@ export function createApp() {
     }
   });
 
+  app.get('/projects/:id/files', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(await svc.listFiles(req.params.id, req.query));
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.post(/^\/projects\/(\d+)\/files\/(.+)$/, async (req, res, next: NextFunction) => {
+    try {
+      const params = req.params as unknown as { 0: string; 1: string };
+      const svc = new GitLabService();
+      const file = await svc.createFile(params[0], params[1], req.body);
+      res.status(201).json(file);
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.put(/^\/projects\/(\d+)\/files\/(.+)$/, async (req, res, next: NextFunction) => {
+    try {
+      const params = req.params as unknown as { 0: string; 1: string };
+      const svc = new GitLabService();
+      res.json(await svc.updateFile(params[0], params[1], req.body));
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.delete(/^\/projects\/(\d+)\/files\/(.+)$/, async (req, res, next: NextFunction) => {
+    try {
+      const params = req.params as unknown as { 0: string; 1: string };
+      const svc = new GitLabService();
+      await svc.deleteFile(params[0], params[1], req.query);
+      res.status(204).end();
+    } catch (err) {
+      next(err);
+    }
+  });
+
   // Raw file content – RegExp route avoids path-to-regexp parsing issues
   app.get(/^\/projects\/(\d+)\/files\/(.+)$/, async (req, res, next: NextFunction) => {
     try {
