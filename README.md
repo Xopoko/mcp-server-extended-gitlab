@@ -96,6 +96,19 @@ npm run start:stdio
 
 This starts an MCP server that communicates through standard input/output.
 
+### Running via MCP Framework SSE
+
+The server can also be started using the MCP Framework with its built-in SSE
+transport.
+
+```bash
+npm run build
+npm run start:mcp
+```
+
+This launches the `mcpServer.ts` entry which uses `MCPServer` to manage the SSE
+connection lifecycle.
+
 
 ---
 

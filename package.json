@@ -8,16 +8,18 @@
     "build": "tsc",
     "dev": "nodemon --exec ts-node src/server.ts",
     "start": "node dist/server.js",
-    "start:stdio": "node dist/stdioServer.js"
+    "start:stdio": "node dist/stdioServer.js",
+    "start:mcp": "node dist/mcpServer.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@modelcontextprotocol/sdk": "file:../typescript-sdk",
+    "@modelcontextprotocol/sdk": "^1.12.1",
     "axios": "^1.9.0",
     "dotenv": "^16.5.0",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "mcp-framework": "^0.2.13"
   },
   "devDependencies": {
     "@types/express": "^5.0.3",
