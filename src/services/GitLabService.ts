@@ -19,6 +19,18 @@ export class GitLabService {
     return data;
   }
 
+  async getMergeRequest(projectId: string | number, mrIid: string | number) {
+    const { data } = await this.client.get(
+      `/projects/${projectId}/merge_requests/${mrIid}`,
+    );
+    return data;
+  }
+
+  async getProject(projectId: string | number) {
+    const { data } = await this.client.get(`/projects/${projectId}`);
+    return data;
+  }
+
   async listDiscussions(projectId: string | number, mrIid: string | number) {
     const { data } = await this.client.get(`/projects/${projectId}/merge_requests/${mrIid}/discussions`);
     return data;
