@@ -1,6 +1,6 @@
 {
   "name": "mcp-server-typescript-template",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A minimal, **test-driven** starter kit for building [Model-Context-Protocol](https://github.com/modelcontextprotocol/) (MCP) servers in TypeScript.",
   "main": "dist/server.js",
   "scripts": {
