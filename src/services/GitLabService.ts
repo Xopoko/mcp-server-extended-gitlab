@@ -84,6 +84,16 @@ export class GitLabService {
     return data;
   }
 
+  async listProjects(params: Record<string, unknown> = {}) {
+    const { data } = await this.client.get('/projects', { params });
+    return data;
+  }
+
+  async searchProjects(query: string) {
+    const { data } = await this.client.get('/projects', { params: { search: query } });
+    return data;
+  }
+
   async listDiscussions(projectId: string | number, mrIid: string | number) {
     const { data } = await this.client.get(`/projects/${projectId}/merge_requests/${mrIid}/discussions`);
     return data;
@@ -454,5 +464,53 @@ export class GitLabService {
   async listGroupMembers(groupId: string | number) {
     const { data } = await this.client.get(`/groups/${groupId}/members`);
     return data;
+  }
+
+  async listReleases(projectId: string | number) {
+    const { data } = await this.client.get(`/projects/${projectId}/releases`);
+    return data;
+  }
+
+  async getRelease(projectId: string | number, tagName: string) {
+    const encoded = encodeURIComponent(tagName);
+    const { data } = await this.client.get(`/projects/${projectId}/releases/${encoded}`);
+    return data;
+  }
+
+  async createRelease(projectId: string | number, payload: Record<string, unknown>) {
+    const { data } = await this.client.post(`/projects/${projectId}/releases`, payload);
+    return data;
+  }
+
+  async updateRelease(projectId: string | number, tagName: string, payload: Record<string, unknown>) {
+    const encoded = encodeURIComponent(tagName);
+    const { data } = await this.client.put(`/projects/${projectId}/releases/${encoded}`, payload);
+    return data;
+  }
+
+  async deleteRelease(projectId: string | number, tagName: string) {
+    const encoded = encodeURIComponent(tagName);
+    await this.client.delete(`/projects/${projectId}/releases/${encoded}`);
+  }
+
+  async listTags(projectId: string | number) {
+    const { data } = await this.client.get(`/projects/${projectId}/repository/tags`);
+    return data;
+  }
+
+  async getTag(projectId: string | number, tagName: string) {
+    const encoded = encodeURIComponent(tagName);
+    const { data } = await this.client.get(`/projects/${projectId}/repository/tags/${encoded}`);
+    return data;
+  }
+
+  async createTag(projectId: string | number, payload: Record<string, unknown>) {
+    const { data } = await this.client.post(`/projects/${projectId}/repository/tags`, payload);
+    return data;
+  }
+
+  async deleteTag(projectId: string | number, tagName: string) {
+    const encoded = encodeURIComponent(tagName);
+    await this.client.delete(`/projects/${projectId}/repository/tags/${encoded}`);
   }
 }

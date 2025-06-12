@@ -22,4 +22,27 @@ describe('GitLab project endpoint', () => {
     expect(res.status).toBe(200);
     expect(res.body).toEqual(mockData);
   });
+
+  it('returns projects list', async () => {
+    const mockData = [{ id: 1, name: 'proj' }];
+    nock(base)
+      .get('/api/v4/projects')
+      .reply(200, mockData);
+
+    const res = await request(app).get('/projects');
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual(mockData);
+  });
+
+  it('searches projects', async () => {
+    const mockData = [{ id: 1, name: 'proj' }];
+    nock(base)
+      .get('/api/v4/projects')
+      .query({ search: 'test' })
+      .reply(200, mockData);
+
+    const res = await request(app).get('/projects/search?q=test');
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual(mockData);
+  });
 });
