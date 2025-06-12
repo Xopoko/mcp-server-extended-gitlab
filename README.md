@@ -51,7 +51,7 @@ GITLAB_TOKEN=your-private-token
 ```
 ├── src
 │   ├── createApp.ts         # Express factory with GitLab routes
-│   ├── bootstrapServer.ts   # hello tool example
+│   ├── bootstrapServer.ts   # initializes and bootstraps the server
 │   └── server.ts            # production entry (npm start)
 ├── tests                    # Jest test suites
 ├── dist                     # compiled JS output
