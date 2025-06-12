@@ -25,14 +25,13 @@ A small server exposing selected GitLab REST API endpoints as tools for the [Mod
 ## 🚀 Quick Start
 
 ```bash
-# Install dependencies
 npm install
 
-# Run tests
 npm test
 
-# Start dev server with hot reload
-npm run dev
+npm run build
+
+npm start
 # -> http://localhost:3000/health  => {"status":"ok"}
 ```
 
@@ -45,69 +44,6 @@ GITLAB_BASE_URL=https://gitlab.example.com/api/v4
 GITLAB_TOKEN=your-private-token
 ```
 
-### Example MCP configuration
-
-Add this server to your MCP client configuration so tools are discoverable in
-**Claude Desktop** and **Cursor**:
-
-```json
-{
-  "servers": [
-    {
-      "name": "gitlab-tools",
-      "url": "http://localhost:3000"
-    }
-  ]
-}
-```
-
-Save the snippet as `claude-desktop.mcp.json` or `cursor.mcp.json` in each
-app's configuration directory.
-
-### Running this server via npx
-
-You can also launch **MCP Server Extended GitLab** on demand using an MCP server
-entry like the following:
-
-```json
-{
-  "gitlab-mcp": {
-    "command": "npx",
-    "args": [
-      "-y",
-      "mcp-server-extended-gitlab"
-    ],
-    "env": {
-      "GITLAB_BASE_URL": "https://gitlab.example.com/api/v4",
-      "GITLAB_TOKEN": "your-private-token"
-    }
-  }
-}
-```
-
-### Running via STDIO
-
-You can run the server without any network transport using the STDIO mode.
-
-```bash
-npm run build
-npm run start:stdio
-```
-
-This starts an MCP server that communicates through standard input/output.
-
-### Running via MCP Framework SSE
-
-The server can also be started using the MCP Framework with its built-in SSE
-transport.
-
-```bash
-npm run build
-npm run start:mcp
-```
-
-This launches the `mcpServer.ts` entry which uses `MCPServer` to manage the SSE
-connection lifecycle.
 
 
 ---
@@ -193,7 +129,6 @@ The server exposes the following endpoints:
 - `DELETE /groups/:id`
 - `GET /groups/:id/members`
 
-Additionally `/tool/hello` demonstrates how to add custom tools.
 
 ---
 
