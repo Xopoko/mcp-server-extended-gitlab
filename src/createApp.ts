@@ -21,11 +21,66 @@ export function createApp() {
     }
   });
 
+  app.post('/projects/:id/merge_requests', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      const mr = await svc.createMergeRequest(req.params.id, req.body);
+      res.status(201).json(mr);
+    } catch (err) {
+      next(err);
+    }
+  });
+
   // Get a single merge request
   app.get('/projects/:id/merge_requests/:iid', async (req, res, next: NextFunction) => {
     try {
       const svc = new GitLabService();
       res.json(await svc.getMergeRequest(req.params.id, req.params.iid));
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.put('/projects/:id/merge_requests/:iid/merge', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(await svc.acceptMergeRequest(req.params.id, req.params.iid));
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.put('/projects/:id/merge_requests/:iid/close', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(await svc.closeMergeRequest(req.params.id, req.params.iid));
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.put('/projects/:id/merge_requests/:iid/reopen', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(await svc.reopenMergeRequest(req.params.id, req.params.iid));
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.put('/projects/:id/merge_requests/:iid/rebase', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(await svc.rebaseMergeRequest(req.params.id, req.params.iid));
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.get('/projects/:id/merge_requests/:iid/changes', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(await svc.getMergeRequestChanges(req.params.id, req.params.iid));
     } catch (err) {
       next(err);
     }
@@ -97,6 +152,162 @@ export function createApp() {
     try {
       const svc = new GitLabService();
       res.json(await svc.listDiscussions(req.params.id, req.params.iid));
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.get('/projects/:id/merge_requests/:iid/discussions/:discussionId', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(
+        await svc.getMergeRequestDiscussion(
+          req.params.id,
+          req.params.iid,
+          req.params.discussionId,
+        ),
+      );
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.post('/projects/:id/merge_requests/:iid/discussions/:discussionId/notes', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      const note = await svc.addNoteToDiscussion(
+        req.params.id,
+        req.params.iid,
+        req.params.discussionId,
+        req.body,
+      );
+      res.status(201).json(note);
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.post('/projects/:id/merge_requests/:iid/discussions', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      const discussion = await svc.createMergeRequestDiscussion(
+        req.params.id,
+        req.params.iid,
+        req.body,
+      );
+      res.status(201).json(discussion);
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.delete('/projects/:id/merge_requests/:iid/discussions/:discussionId', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      await svc.deleteMergeRequestDiscussion(
+        req.params.id,
+        req.params.iid,
+        req.params.discussionId,
+      );
+      res.status(204).end();
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.put('/projects/:id/merge_requests/:iid/discussions/:discussionId', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      const discussion = await svc.updateMergeRequestDiscussion(
+        req.params.id,
+        req.params.iid,
+        req.params.discussionId,
+        req.body,
+      );
+      res.json(discussion);
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.put('/projects/:id/merge_requests/:iid/discussions/:discussionId/resolve', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(
+        await svc.resolveDiscussion(
+          req.params.id,
+          req.params.iid,
+          req.params.discussionId,
+        ),
+      );
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.get('/projects/:id/merge_requests/:iid/notes/:noteId', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(
+        await svc.getMergeRequestNote(
+          req.params.id,
+          req.params.iid,
+          req.params.noteId,
+        ),
+      );
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.post('/projects/:id/merge_requests/:iid/notes', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      const note = await svc.createMergeRequestNote(
+        req.params.id,
+        req.params.iid,
+        req.body,
+      );
+      res.status(201).json(note);
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.put('/projects/:id/merge_requests/:iid/notes/:noteId', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(
+        await svc.updateMergeRequestNote(
+          req.params.id,
+          req.params.iid,
+          req.params.noteId,
+          req.body,
+        ),
+      );
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.delete('/projects/:id/merge_requests/:iid/notes/:noteId', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      await svc.deleteMergeRequestNote(
+        req.params.id,
+        req.params.iid,
+        req.params.noteId,
+      );
+      res.status(204).end();
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.put('/projects/:id/merge_requests/:iid', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(await svc.setMergeRequestLabels(req.params.id, req.params.iid, req.body));
     } catch (err) {
       next(err);
     }
