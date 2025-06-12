@@ -1,5 +1,18 @@
 import axios, { AxiosInstance } from 'axios';
 
+export interface CreateIssueOptions {
+  title: string;
+  description?: string;
+  [key: string]: unknown;
+}
+
+export interface IssueResponse {
+  id: number;
+  title: string;
+  description?: string;
+  [key: string]: unknown;
+}
+
 export class GitLabService {
   private client: AxiosInstance;
 
@@ -46,13 +59,19 @@ export class GitLabService {
     return data;
   }
 
-  async listIssues(projectId: string | number) {
+  async listIssues(projectId: string | number): Promise<IssueResponse[]> {
     const { data } = await this.client.get(`/projects/${projectId}/issues`);
     return data;
   }
 
-  async createIssue(projectId: string | number, payload: CreateIssueOptions): Promise<IssueResponse> {
-    const { data } = await this.client.post(`/projects/${projectId}/issues`, payload);
+  async createIssue(
+    projectId: string | number,
+    payload: CreateIssueOptions,
+  ): Promise<IssueResponse> {
+    const { data } = await this.client.post(
+      `/projects/${projectId}/issues`,
+      payload,
+    );
     return data;
   }
 
