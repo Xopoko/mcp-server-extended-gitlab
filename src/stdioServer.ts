@@ -23,7 +23,7 @@ async function main() {
   process.on('SIGINT', () => shutdown(transport));
   process.on('SIGTERM', () => shutdown(transport));
   await server.connect(transport);
-  console.error('STDIO server started');
+  console.log('STDIO server started');
 }
 
 async function shutdown(transport: StdioServerTransport) {
