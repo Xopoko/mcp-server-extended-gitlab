@@ -159,6 +159,17 @@ export class GitLabService {
     return data;
   }
 
+  async unresolveDiscussion(
+    projectId: string | number,
+    mrIid: string | number,
+    discussionId: string,
+  ) {
+    const { data } = await this.client.put(
+      `/projects/${projectId}/merge_requests/${mrIid}/discussions/${discussionId}/unresolve`,
+    );
+    return data;
+  }
+
   async listBranches(projectId: string | number) {
     const { data } = await this.client.get(`/projects/${projectId}/repository/branches`);
     return data;
