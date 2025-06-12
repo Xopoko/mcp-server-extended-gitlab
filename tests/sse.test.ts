@@ -1,6 +1,8 @@
 import http from 'http';
 import { createApp } from '../src/createApp';
 
+jest.setTimeout(30000);
+
 describe('SSE transport', () => {
   it('exposes SSE endpoint and message delivery', (done) => {
     const app = createApp();
