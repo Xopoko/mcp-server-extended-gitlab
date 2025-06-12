@@ -26,9 +26,24 @@ describe('SSE transport', () => {
         method: 'GET',
         headers: { Accept: 'text/event-stream' },
       });
+
+      let finished = false;
+      const cleanup = (err?: Error) => {
+        if (finished) return;
+        finished = true;
+        req.destroy();
+        server.close(() => (err ? done(err) : done()));
+      };
+
       req.on('response', (res) => {
-        expect(res.statusCode).toBe(200);
-        expect(res.headers['content-type']).toContain('text/event-stream');
+        try {
+          expect(res.statusCode).toBe(200);
+          expect(res.headers['content-type']).toContain('text/event-stream');
+        } catch (e) {
+          cleanup(e as Error);
+          return;
+        }
+
         let buf = '';
         res.on('data', (chunk) => {
           buf += chunk.toString();
@@ -36,7 +51,6 @@ describe('SSE transport', () => {
             const match = buf.match(/data: \/messages\/(.*)\n/);
             if (match) {
               const session = match[1];
-              // send message
               const post = http.request(
                 {
                   hostname: '127.0.0.1',
@@ -49,16 +63,19 @@ describe('SSE transport', () => {
                   /* noop */
                 },
               );
+              // ignore errors to avoid triggering done multiple times
               post.on('error', () => {});
               post.end(JSON.stringify({ hello: 'world' }));
             }
           }
+
           if (buf.includes('hello')) {
-            req.destroy();
-            server.close(() => done());
+            cleanup();
           }
         });
       });
+
+      req.on('error', cleanup);
       req.end();
     });
   });
@@ -67,6 +84,14 @@ describe('SSE transport', () => {
     const app = createApp();
     const server = app.listen(() => {
       const { port } = server.address() as any;
+
+      let finished = false;
+      const cleanup = (err?: Error) => {
+        if (finished) return;
+        finished = true;
+        server.close(() => (err ? done(err) : done()));
+      };
+
       http
         .get({
           hostname: '127.0.0.1',
@@ -75,10 +100,15 @@ describe('SSE transport', () => {
           headers: { Accept: 'text/event-stream' },
         })
         .on('response', (res) => {
-          expect(res.headers.connection).toBe('keep-alive');
-          res.destroy();
-          server.close(() => done());
-        });
+          try {
+            expect(res.headers.connection).toBe('keep-alive');
+            res.destroy();
+            cleanup();
+          } catch (e) {
+            cleanup(e as Error);
+          }
+        })
+        .on('error', cleanup);
     });
   });
 });
