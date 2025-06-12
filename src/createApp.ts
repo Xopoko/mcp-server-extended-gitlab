@@ -50,6 +50,27 @@ export function createApp() {
     }
   });
 
+  // List issues of a project
+  app.get('/projects/:id/issues', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(await svc.listIssues(req.params.id));
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  // Create an issue
+  app.post('/projects/:id/issues', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      const issue = await svc.createIssue(req.params.id, req.body);
+      res.status(201).json(issue);
+    } catch (err) {
+      next(err);
+    }
+  });
+
   // List discussions of a merge request
   app.get('/projects/:id/merge_requests/:iid/discussions', async (req, res, next: NextFunction) => {
     try {
