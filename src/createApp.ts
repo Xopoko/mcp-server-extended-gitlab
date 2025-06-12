@@ -96,6 +96,41 @@ export function createApp() {
     }
   });
 
+  app.post('/projects/:id/branches', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      const branch = await svc.createBranch(req.params.id, req.body);
+      res.status(201).json(branch);
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.get(
+    '/projects/:id/branches/:branch',
+    async (req, res, next: NextFunction) => {
+      try {
+        const svc = new GitLabService();
+        res.json(await svc.getBranch(req.params.id, req.params.branch));
+      } catch (err) {
+        next(err);
+      }
+    },
+  );
+
+  app.delete(
+    '/projects/:id/branches/:branch',
+    async (req, res, next: NextFunction) => {
+      try {
+        const svc = new GitLabService();
+        await svc.deleteBranch(req.params.id, req.params.branch);
+        res.status(204).end();
+      } catch (err) {
+        next(err);
+      }
+    },
+  );
+
   // List commits of a project
   app.get('/projects/:id/commits', async (req, res, next: NextFunction) => {
     try {

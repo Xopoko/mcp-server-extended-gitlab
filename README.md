@@ -155,6 +155,9 @@ The server exposes the following endpoints:
 - `PUT /projects/:id/merge_requests/:iid` (set labels)
 - `GET /projects/:id/files/<path>?ref=<branch>`
 - `GET /projects/:id/branches`
+- `POST /projects/:id/branches`
+- `GET /projects/:id/branches/:branch`
+- `DELETE /projects/:id/branches/:branch`
 - `GET /projects/:id/commits`
 - `GET /projects/:id/pipelines`
 - `GET /projects/:id/pipelines/:pipeline_id`

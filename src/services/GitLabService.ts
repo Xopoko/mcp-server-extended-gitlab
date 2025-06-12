@@ -175,6 +175,32 @@ export class GitLabService {
     return data;
   }
 
+  async getBranch(projectId: string | number, branch: string) {
+    const encoded = encodeURIComponent(branch);
+    const { data } = await this.client.get(
+      `/projects/${projectId}/repository/branches/${encoded}`,
+    );
+    return data;
+  }
+
+  async createBranch(
+    projectId: string | number,
+    payload: { branch: string; ref: string },
+  ) {
+    const { data } = await this.client.post(
+      `/projects/${projectId}/repository/branches`,
+      payload,
+    );
+    return data;
+  }
+
+  async deleteBranch(projectId: string | number, branch: string) {
+    const encoded = encodeURIComponent(branch);
+    await this.client.delete(
+      `/projects/${projectId}/repository/branches/${encoded}`,
+    );
+  }
+
   async listCommits(projectId: string | number) {
     const { data } = await this.client.get(`/projects/${projectId}/repository/commits`);
     return data;
