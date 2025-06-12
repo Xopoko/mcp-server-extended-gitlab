@@ -218,6 +218,54 @@ export class GitLabService {
     return data;
   }
 
+  async createPipeline(
+    projectId: string | number,
+    payload: Record<string, unknown>,
+  ) {
+    const { data } = await this.client.post(
+      `/projects/${projectId}/pipelines`,
+      payload,
+    );
+    return data;
+  }
+
+  async cancelPipeline(projectId: string | number, pipelineId: string | number) {
+    const { data } = await this.client.post(
+      `/projects/${projectId}/pipelines/${pipelineId}/cancel`,
+    );
+    return data;
+  }
+
+  async retryPipeline(projectId: string | number, pipelineId: string | number) {
+    const { data } = await this.client.post(
+      `/projects/${projectId}/pipelines/${pipelineId}/retry`,
+    );
+    return data;
+  }
+
+  async deletePipeline(projectId: string | number, pipelineId: string | number) {
+    await this.client.delete(
+      `/projects/${projectId}/pipelines/${pipelineId}`,
+    );
+  }
+
+  async getPipelineJobs(projectId: string | number, pipelineId: string | number) {
+    const { data } = await this.client.get(
+      `/projects/${projectId}/pipelines/${pipelineId}/jobs`,
+    );
+    return data;
+  }
+
+  async downloadPipelineArtifacts(
+    projectId: string | number,
+    pipelineId: string | number,
+  ) {
+    const { data } = await this.client.get(
+      `/projects/${projectId}/pipelines/${pipelineId}/artifacts`,
+    );
+    return data;
+  }
+
   async listIssues(projectId: string | number): Promise<IssueResponse[]> {
     const { data } = await this.client.get(`/projects/${projectId}/issues`);
     return data;

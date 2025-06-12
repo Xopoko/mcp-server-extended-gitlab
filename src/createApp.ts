@@ -203,6 +203,77 @@ export function createApp() {
     }
   });
 
+  app.post('/projects/:id/pipelines', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      const pipeline = await svc.createPipeline(req.params.id, req.body);
+      res.status(201).json(pipeline);
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.post(
+    '/projects/:id/pipelines/:pipelineId/cancel',
+    async (req, res, next: NextFunction) => {
+      try {
+        const svc = new GitLabService();
+        const result = await svc.cancelPipeline(
+          req.params.id,
+          req.params.pipelineId,
+        );
+        res.json(result);
+      } catch (err) {
+        next(err);
+      }
+    },
+  );
+
+  app.post(
+    '/projects/:id/pipelines/:pipelineId/retry',
+    async (req, res, next: NextFunction) => {
+      try {
+        const svc = new GitLabService();
+        const result = await svc.retryPipeline(
+          req.params.id,
+          req.params.pipelineId,
+        );
+        res.json(result);
+      } catch (err) {
+        next(err);
+      }
+    },
+  );
+
+  app.delete('/projects/:id/pipelines/:pipelineId', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      await svc.deletePipeline(req.params.id, req.params.pipelineId);
+      res.status(204).end();
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.get('/projects/:id/pipelines/:pipelineId/jobs', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(await svc.getPipelineJobs(req.params.id, req.params.pipelineId));
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.get('/projects/:id/pipelines/:pipelineId/artifacts', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      const data = await svc.downloadPipelineArtifacts(req.params.id, req.params.pipelineId);
+      res.send(data);
+    } catch (err) {
+      next(err);
+    }
+  });
+
   // List issues of a project
   app.get('/projects/:id/issues', async (req, res, next: NextFunction) => {
     try {
