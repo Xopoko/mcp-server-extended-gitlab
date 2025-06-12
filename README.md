@@ -68,67 +68,68 @@ GITLAB_TOKEN=your-private-token
 
 The server exposes the following endpoints:
 
-- `GET /projects`
-- `GET /projects/search?q=<query>`
-- `GET /projects/:id`
-- `GET /projects/:id/merge_requests`
-- `GET /projects/:id/merge_requests/:iid`
-- `GET /projects/:id/merge_requests/:iid/discussions`
-- `POST /projects/:id/merge_requests`
-- `PUT /projects/:id/merge_requests/:iid/merge`
-- `PUT /projects/:id/merge_requests/:iid/close`
-- `PUT /projects/:id/merge_requests/:iid/reopen`
-- `PUT /projects/:id/merge_requests/:iid/rebase`
-- `GET /projects/:id/merge_requests/:iid/changes`
-- `GET /projects/:id/merge_requests/:iid/discussions/:discussion_id`
-- `POST /projects/:id/merge_requests/:iid/discussions/:discussion_id/notes`
-- `POST /projects/:id/merge_requests/:iid/discussions`
-- `DELETE /projects/:id/merge_requests/:iid/discussions/:discussion_id`
-- `PUT /projects/:id/merge_requests/:iid/discussions/:discussion_id`
-- `PUT /projects/:id/merge_requests/:iid/discussions/:discussion_id/resolve`
-- `GET /projects/:id/merge_requests/:iid/notes/:note_id`
-- `POST /projects/:id/merge_requests/:iid/notes`
-- `PUT /projects/:id/merge_requests/:iid/notes/:note_id`
-- `DELETE /projects/:id/merge_requests/:iid/notes/:note_id`
-- `PUT /projects/:id/merge_requests/:iid` (set labels)
-- `GET /projects/:id/files/<path>?ref=<branch>`
-- `POST /projects/:id/files/<path>`
-- `PUT /projects/:id/files/<path>`
-- `DELETE /projects/:id/files/<path>?branch=<branch>&commit_message=<msg>`
-- `GET /projects/:id/files?path=<path>&ref=<branch>`
-- `GET /projects/:id/branches`
-- `POST /projects/:id/branches`
-- `GET /projects/:id/branches/:branch`
-- `DELETE /projects/:id/branches/:branch`
-- `GET /projects/:id/commits`
-- `GET /projects/:id/pipelines`
-- `GET /projects/:id/pipelines/:pipeline_id`
-- `POST /projects/:id/pipelines`
-- `POST /projects/:id/pipelines/:pipeline_id/cancel`
-- `POST /projects/:id/pipelines/:pipeline_id/retry`
-- `DELETE /projects/:id/pipelines/:pipeline_id`
-- `GET /projects/:id/pipelines/:pipeline_id/jobs`
-- `GET /projects/:id/pipelines/:pipeline_id/artifacts`
-- `GET /projects/:id/releases`
-- `GET /projects/:id/releases/:tag`
-- `POST /projects/:id/releases`
-- `PUT /projects/:id/releases/:tag`
-- `DELETE /projects/:id/releases/:tag`
-- `GET /projects/:id/tags`
-- `GET /projects/:id/tags/:tag`
-- `POST /projects/:id/tags`
-- `DELETE /projects/:id/tags/:tag`
-- `GET /projects/:id/issues`
-- `POST /projects/:id/issues`
-- `GET /projects/:id/issues/:issue_id`
-- `PUT /projects/:id/issues/:issue_id`
-- `PUT /projects/:id/issues/:issue_id/close`
-- `PUT /projects/:id/issues/:issue_id/reopen`
-- `POST /groups`
-- `GET /groups/:id`
-- `DELETE /groups/:id`
-- `GET /groups/:id/members`
-
+| Method | Endpoint |
+| ------ | -------- |
+| GET | `/projects` |
+| GET | `/projects/search?q=<query>` |
+| GET | `/projects/:id` |
+| GET | `/projects/:id/merge_requests` |
+| GET | `/projects/:id/merge_requests/:iid` |
+| GET | `/projects/:id/merge_requests/:iid/discussions` |
+| POST | `/projects/:id/merge_requests` |
+| PUT | `/projects/:id/merge_requests/:iid/merge` |
+| PUT | `/projects/:id/merge_requests/:iid/close` |
+| PUT | `/projects/:id/merge_requests/:iid/reopen` |
+| PUT | `/projects/:id/merge_requests/:iid/rebase` |
+| GET | `/projects/:id/merge_requests/:iid/changes` |
+| GET | `/projects/:id/merge_requests/:iid/discussions/:discussion_id` |
+| POST | `/projects/:id/merge_requests/:iid/discussions/:discussion_id/notes` |
+| POST | `/projects/:id/merge_requests/:iid/discussions` |
+| DELETE | `/projects/:id/merge_requests/:iid/discussions/:discussion_id` |
+| PUT | `/projects/:id/merge_requests/:iid/discussions/:discussion_id` |
+| PUT | `/projects/:id/merge_requests/:iid/discussions/:discussion_id/resolve` |
+| GET | `/projects/:id/merge_requests/:iid/notes/:note_id` |
+| POST | `/projects/:id/merge_requests/:iid/notes` |
+| PUT | `/projects/:id/merge_requests/:iid/notes/:note_id` |
+| DELETE | `/projects/:id/merge_requests/:iid/notes/:note_id` |
+| PUT | `/projects/:id/merge_requests/:iid` |
+| GET | `/projects/:id/files/<path>?ref=<branch>` |
+| POST | `/projects/:id/files/<path>` |
+| PUT | `/projects/:id/files/<path>` |
+| DELETE | `/projects/:id/files/<path>?branch=<branch>&commit_message=<msg>` |
+| GET | `/projects/:id/files?path=<path>&ref=<branch>` |
+| GET | `/projects/:id/branches` |
+| POST | `/projects/:id/branches` |
+| GET | `/projects/:id/branches/:branch` |
+| DELETE | `/projects/:id/branches/:branch` |
+| GET | `/projects/:id/commits` |
+| GET | `/projects/:id/pipelines` |
+| GET | `/projects/:id/pipelines/:pipeline_id` |
+| POST | `/projects/:id/pipelines` |
+| POST | `/projects/:id/pipelines/:pipeline_id/cancel` |
+| POST | `/projects/:id/pipelines/:pipeline_id/retry` |
+| DELETE | `/projects/:id/pipelines/:pipeline_id` |
+| GET | `/projects/:id/pipelines/:pipeline_id/jobs` |
+| GET | `/projects/:id/pipelines/:pipeline_id/artifacts` |
+| GET | `/projects/:id/releases` |
+| GET | `/projects/:id/releases/:tag` |
+| POST | `/projects/:id/releases` |
+| PUT | `/projects/:id/releases/:tag` |
+| DELETE | `/projects/:id/releases/:tag` |
+| GET | `/projects/:id/tags` |
+| GET | `/projects/:id/tags/:tag` |
+| POST | `/projects/:id/tags` |
+| DELETE | `/projects/:id/tags/:tag` |
+| GET | `/projects/:id/issues` |
+| POST | `/projects/:id/issues` |
+| GET | `/projects/:id/issues/:issue_id` |
+| PUT | `/projects/:id/issues/:issue_id` |
+| PUT | `/projects/:id/issues/:issue_id/close` |
+| PUT | `/projects/:id/issues/:issue_id/reopen` |
+| POST | `/groups` |
+| GET | `/groups/:id` |
+| DELETE | `/groups/:id` |
+| GET | `/groups/:id/members` |
 
 ---
 
