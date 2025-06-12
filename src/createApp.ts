@@ -359,6 +359,110 @@ export function createApp() {
     }
   });
 
+  app.get(
+    '/projects/:id/repository/commits/:commitId/discussions',
+    async (req, res, next: NextFunction) => {
+      try {
+        const svc = new GitLabService();
+        res.json(
+          await svc.listCommitDiscussions(req.params.id, req.params.commitId),
+        );
+      } catch (err) {
+        next(err);
+      }
+    },
+  );
+
+  app.get(
+    '/projects/:id/repository/commits/:commitId/discussions/:discussionId',
+    async (req, res, next: NextFunction) => {
+      try {
+        const svc = new GitLabService();
+        res.json(
+          await svc.getCommitDiscussion(
+            req.params.id,
+            req.params.commitId,
+            req.params.discussionId,
+          ),
+        );
+      } catch (err) {
+        next(err);
+      }
+    },
+  );
+
+  app.post(
+    '/projects/:id/repository/commits/:commitId/discussions',
+    async (req, res, next: NextFunction) => {
+      try {
+        const svc = new GitLabService();
+        const discussion = await svc.createCommitDiscussion(
+          req.params.id,
+          req.params.commitId,
+          req.body,
+        );
+        res.status(201).json(discussion);
+      } catch (err) {
+        next(err);
+      }
+    },
+  );
+
+  app.post(
+    '/projects/:id/repository/commits/:commitId/discussions/:discussionId/notes',
+    async (req, res, next: NextFunction) => {
+      try {
+        const svc = new GitLabService();
+        const note = await svc.addNoteToCommitDiscussion(
+          req.params.id,
+          req.params.commitId,
+          req.params.discussionId,
+          req.body,
+        );
+        res.status(201).json(note);
+      } catch (err) {
+        next(err);
+      }
+    },
+  );
+
+  app.put(
+    '/projects/:id/repository/commits/:commitId/discussions/:discussionId/notes/:noteId',
+    async (req, res, next: NextFunction) => {
+      try {
+        const svc = new GitLabService();
+        const note = await svc.updateCommitDiscussion(
+          req.params.id,
+          req.params.commitId,
+          req.params.discussionId,
+          req.params.noteId,
+          req.body,
+        );
+        res.json(note);
+      } catch (err) {
+        next(err);
+      }
+    },
+  );
+
+  app.delete(
+    '/projects/:id/repository/commits/:commitId/discussions/:discussionId/notes/:noteId',
+    async (req, res, next: NextFunction) => {
+      try {
+        const svc = new GitLabService();
+        await svc.deleteCommitDiscussion(
+          req.params.id,
+          req.params.commitId,
+          req.params.discussionId,
+          req.params.noteId,
+        );
+        res.status(204).end();
+      } catch (err) {
+        next(err);
+      }
+    },
+  );
+
   // List pipelines of a project
   app.get('/projects/:id/pipelines', async (req, res, next: NextFunction) => {
     try {

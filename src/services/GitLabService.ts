@@ -215,6 +215,74 @@ export class GitLabService {
     return data;
   }
 
+  async listCommitDiscussions(projectId: string | number, commitId: string) {
+    const { data } = await this.client.get(
+      `/projects/${projectId}/repository/commits/${commitId}/discussions`,
+    );
+    return data;
+  }
+
+  async getCommitDiscussion(
+    projectId: string | number,
+    commitId: string,
+    discussionId: string,
+  ) {
+    const { data } = await this.client.get(
+      `/projects/${projectId}/repository/commits/${commitId}/discussions/${discussionId}`,
+    );
+    return data;
+  }
+
+  async createCommitDiscussion(
+    projectId: string | number,
+    commitId: string,
+    payload: Record<string, unknown>,
+  ) {
+    const { data } = await this.client.post(
+      `/projects/${projectId}/repository/commits/${commitId}/discussions`,
+      payload,
+    );
+    return data;
+  }
+
+  async addNoteToCommitDiscussion(
+    projectId: string | number,
+    commitId: string,
+    discussionId: string,
+    payload: Record<string, unknown>,
+  ) {
+    const { data } = await this.client.post(
+      `/projects/${projectId}/repository/commits/${commitId}/discussions/${discussionId}/notes`,
+      payload,
+    );
+    return data;
+  }
+
+  async updateCommitDiscussion(
+    projectId: string | number,
+    commitId: string,
+    discussionId: string,
+    noteId: string | number,
+    payload: Record<string, unknown>,
+  ) {
+    const { data } = await this.client.put(
+      `/projects/${projectId}/repository/commits/${commitId}/discussions/${discussionId}/notes/${noteId}`,
+      payload,
+    );
+    return data;
+  }
+
+  async deleteCommitDiscussion(
+    projectId: string | number,
+    commitId: string,
+    discussionId: string,
+    noteId: string | number,
+  ) {
+    await this.client.delete(
+      `/projects/${projectId}/repository/commits/${commitId}/discussions/${discussionId}/notes/${noteId}`,
+    );
+  }
+
   async listPipelines(projectId: string | number) {
     const { data } = await this.client.get(`/projects/${projectId}/pipelines`);
     return data;
