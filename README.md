@@ -44,6 +44,25 @@ GITLAB_BASE_URL=https://gitlab.example.com/api/v4
 GITLAB_TOKEN=your-private-token
 ```
 
+### Example MCP configuration
+
+Add this server to your MCP client configuration so tools are discoverable in
+**Claude Desktop** and **Cursor**:
+
+```json
+{
+  "servers": [
+    {
+      "name": "gitlab-tools",
+      "url": "http://localhost:3000"
+    }
+  ]
+}
+```
+
+Save the snippet as `claude-desktop.mcp.json` or `cursor.mcp.json` in each
+app's configuration directory.
+
 ---
 
 ## 📂 Project Structure
