@@ -1,4 +1,5 @@
-import express, { NextFunction } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
+import { randomUUID } from 'crypto';
 import { GitLabService } from './services/GitLabService';
 
 export function createApp() {
@@ -124,6 +125,44 @@ export function createApp() {
     } catch (err) {
       next(err);
     }
+  });
+
+  // --- SSE Transport -------------------------------------------------
+  type Client = { res: Response; keepAlive: NodeJS.Timeout };
+  const clients = new Map<string, Client>();
+
+  app.get('/sse', (req: Request, res: Response) => {
+    const id = randomUUID();
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.flushHeaders();
+
+    // inform client of the message endpoint
+    res.write(`event: endpoint\n`);
+    res.write(`data: /messages/${id}\n\n`);
+
+    const keepAlive = setInterval(() => {
+      res.write(`: keep-alive ${Date.now()}\n\n`);
+    }, 15000);
+    keepAlive.unref();
+
+    clients.set(id, { res, keepAlive });
+
+    req.on('close', () => {
+      clearInterval(keepAlive);
+      clients.delete(id);
+    });
+  });
+
+  app.post('/messages/:id', (req: Request, res: Response) => {
+    const client = clients.get(req.params.id);
+    if (!client) {
+      res.status(404).json({ error: 'session not found' });
+      return;
+    }
+    client.res.write(`event: message\n`);
+    client.res.write(`data: ${JSON.stringify(req.body)}\n\n`);
+    res.status(204).end();
   });
 
   return app;
