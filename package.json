@@ -1,7 +1,7 @@
 {
-  "name": "mcp-server-typescript-template",
+  "name": "mcp-server-extended-gitlab",
   "version": "1.0.2",
-  "description": "A minimal, **test-driven** starter kit for building [Model-Context-Protocol](https://github.com/modelcontextprotocol/) (MCP) servers in TypeScript.",
+  "description": "A server exposing GitLab REST APIs as Model-Context-Protocol (MCP) tools.",
   "main": "dist/server.js",
   "scripts": {
     "test": "jest",
@@ -11,9 +11,14 @@
     "start:stdio": "node dist/stdioServer.js",
     "start:mcp": "node dist/mcpServer.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "gitlab",
+    "mcp",
+    "server",
+    "cli"
+  ],
+  "author": "Xopoko",
+  "license": "MIT",
   "dependencies": {
     "axios": "^1.9.0",
     "dotenv": "^16.5.0",
