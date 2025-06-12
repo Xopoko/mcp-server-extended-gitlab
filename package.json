@@ -7,7 +7,8 @@
     "test": "jest",
     "build": "tsc",
     "dev": "nodemon --exec ts-node src/server.ts",
-    "start": "node dist/server.js"
+    "start": "node dist/server.js",
+    "start:stdio": "node dist/stdioServer.js"
   },
   "keywords": [],
   "author": "",
