@@ -59,6 +59,18 @@ export class GitLabService {
     return data;
   }
 
+  async listPipelines(projectId: string | number) {
+    const { data } = await this.client.get(`/projects/${projectId}/pipelines`);
+    return data;
+  }
+
+  async getPipeline(projectId: string | number, pipelineId: string | number) {
+    const { data } = await this.client.get(
+      `/projects/${projectId}/pipelines/${pipelineId}`,
+    );
+    return data;
+  }
+
   async listIssues(projectId: string | number): Promise<IssueResponse[]> {
     const { data } = await this.client.get(`/projects/${projectId}/issues`);
     return data;
