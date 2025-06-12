@@ -50,6 +50,26 @@ export function createApp() {
     }
   });
 
+  // List pipelines of a project
+  app.get('/projects/:id/pipelines', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(await svc.listPipelines(req.params.id));
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  // Get a single pipeline
+  app.get('/projects/:id/pipelines/:pipelineId', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(await svc.getPipeline(req.params.id, req.params.pipelineId));
+    } catch (err) {
+      next(err);
+    }
+  });
+
   // List issues of a project
   app.get('/projects/:id/issues', async (req, res, next: NextFunction) => {
     try {

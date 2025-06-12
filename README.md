@@ -114,6 +114,8 @@ The server exposes the following endpoints:
 - `GET /projects/:id/files/<path>?ref=<branch>`
 - `GET /projects/:id/branches`
 - `GET /projects/:id/commits`
+- `GET /projects/:id/pipelines`
+- `GET /projects/:id/pipelines/:pipeline_id`
 - `GET /projects/:id/issues`
 - `POST /projects/:id/issues`
 
