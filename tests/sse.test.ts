@@ -1,9 +1,20 @@
 import http from 'http';
 import { createApp } from '../src/createApp';
+import nock from 'nock';
 
 jest.setTimeout(30000);
 
 describe('SSE transport', () => {
+  beforeAll(() => {
+    // Ensure local connections bypass proxy settings used in CI
+    process.env.http_proxy = '';
+    process.env.HTTP_PROXY = '';
+    nock.enableNetConnect();
+  });
+
+  afterAll(() => {
+    nock.cleanAll();
+  });
   it('exposes SSE endpoint and message delivery', (done) => {
     const app = createApp();
     const server = app.listen(() => {
