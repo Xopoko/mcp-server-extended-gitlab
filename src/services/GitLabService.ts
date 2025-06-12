@@ -51,7 +51,7 @@ export class GitLabService {
     return data;
   }
 
-  async createIssue(projectId: string | number, payload: unknown) {
+  async createIssue(projectId: string | number, payload: CreateIssueOptions): Promise<IssueResponse> {
     const { data } = await this.client.post(`/projects/${projectId}/issues`, payload);
     return data;
   }
