@@ -2,7 +2,7 @@ const importer = new Function('p', 'return import(p)');
 (async () => {
   const { MCPServer } = await importer('mcp-framework');
   const server = new MCPServer({
-    basePath: __dirname,
+    basePath: __filename,
     transport: { type: 'stdio' },
   });
 

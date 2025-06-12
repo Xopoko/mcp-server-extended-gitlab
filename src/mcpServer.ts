@@ -54,7 +54,7 @@ export async function createMcpServer({
   const server = new MCPServer({
     name: pkg.name,
     version: pkg.version,
-    basePath: __dirname,
+    basePath: __filename,
     transport: {
       type: 'sse',
       options: {
