@@ -15,10 +15,15 @@ describe('SSE transport', () => {
   afterAll(() => {
     nock.cleanAll();
   });
-  it('exposes SSE endpoint and message delivery', (done) => {
+  it('exposes SSE endpoint and message delivery', async () => {
     const app = createApp();
-    const server = app.listen(() => {
-      const { port } = server.address() as any;
+    const server: http.Server = await new Promise((resolve) => {
+      const s = app.listen(() => resolve(s));
+    });
+
+    const { port } = server.address() as any;
+
+    await new Promise<void>((resolve, reject) => {
       const req = http.request({
         hostname: '127.0.0.1',
         port,
@@ -32,7 +37,11 @@ describe('SSE transport', () => {
         if (finished) return;
         finished = true;
         req.destroy();
-        server.close(() => (err ? done(err) : done()));
+        if (err) {
+          reject(err);
+        } else {
+          resolve();
+        }
       };
 
       req.on('response', (res) => {
@@ -63,7 +72,6 @@ describe('SSE transport', () => {
                   /* noop */
                 },
               );
-              // ignore errors to avoid triggering done multiple times
               post.on('error', () => {});
               post.end(JSON.stringify({ hello: 'world' }));
             }
@@ -78,18 +86,28 @@ describe('SSE transport', () => {
       req.on('error', cleanup);
       req.end();
     });
+
+    await new Promise((resolve) => server.close(() => resolve(null)));
   });
 
-  it('keeps the connection alive', (done) => {
+  it('keeps the connection alive', async () => {
     const app = createApp();
-    const server = app.listen(() => {
-      const { port } = server.address() as any;
+    const server: http.Server = await new Promise((resolve) => {
+      const s = app.listen(() => resolve(s));
+    });
 
+    const { port } = server.address() as any;
+
+    await new Promise<void>((resolve, reject) => {
       let finished = false;
       const cleanup = (err?: Error) => {
         if (finished) return;
         finished = true;
-        server.close(() => (err ? done(err) : done()));
+        if (err) {
+          reject(err);
+        } else {
+          resolve();
+        }
       };
 
       http
@@ -110,5 +128,7 @@ describe('SSE transport', () => {
         })
         .on('error', cleanup);
     });
+
+    await new Promise((resolve) => server.close(() => resolve(null)));
   });
 });
