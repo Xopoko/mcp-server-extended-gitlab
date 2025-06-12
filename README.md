@@ -17,7 +17,7 @@ A small server exposing selected GitLab REST API endpoints as tools for the [Mod
 * **GitLab integration** for merge requests, branches, commits, discussions, issues and file content.
 * **TDD-first** workflow – Jest + ts-jest preconfigured.
 * **Hot reload** in development via `nodemon`.
-* Uses the MCP TypeScript SDK via a local path dependency.
+* Built on the mcp-framework for tools and transports.
 * **Server-Sent Events** transport for streaming MCP responses.
 
 ---

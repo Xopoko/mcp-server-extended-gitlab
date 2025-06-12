@@ -15,7 +15,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@modelcontextprotocol/sdk": "file:../typescript-sdk",
+    "@modelcontextprotocol/sdk": "^1.11.0",
     "axios": "^1.9.0",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",

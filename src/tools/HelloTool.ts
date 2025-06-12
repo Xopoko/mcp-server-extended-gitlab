@@ -1,14 +1,16 @@
 import { MCPTool } from 'mcp-framework';
 import { z } from 'zod';
 
-export default class HelloTool extends MCPTool<{ name: string }> {
+const HelloToolSchema = z.object({
+  name: z.string().describe('Name to greet'),
+});
+
+export default class HelloTool extends MCPTool {
   name = 'hello';
   description = 'Greets the provided name';
-  protected schema = {
-    name: { type: z.string(), description: 'Name to greet' },
-  } as const;
+  schema = HelloToolSchema;
 
-  protected async execute(input: { name: string }) {
-    return { content: [{ type: 'text', text: `Hello, ${input.name}!` }] };
+  async execute(input: { name: string }) {
+    return `Hello, ${input.name}!`;
   }
 }
