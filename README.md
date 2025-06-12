@@ -132,6 +132,8 @@ connection lifecycle.
 
 The server exposes the following endpoints:
 
+- `GET /projects`
+- `GET /projects/search?q=<query>`
 - `GET /projects/:id`
 - `GET /projects/:id/merge_requests`
 - `GET /projects/:id/merge_requests/:iid`
@@ -171,6 +173,15 @@ The server exposes the following endpoints:
 - `DELETE /projects/:id/pipelines/:pipeline_id`
 - `GET /projects/:id/pipelines/:pipeline_id/jobs`
 - `GET /projects/:id/pipelines/:pipeline_id/artifacts`
+- `GET /projects/:id/releases`
+- `GET /projects/:id/releases/:tag`
+- `POST /projects/:id/releases`
+- `PUT /projects/:id/releases/:tag`
+- `DELETE /projects/:id/releases/:tag`
+- `GET /projects/:id/tags`
+- `GET /projects/:id/tags/:tag`
+- `POST /projects/:id/tags`
+- `DELETE /projects/:id/tags/:tag`
 - `GET /projects/:id/issues`
 - `POST /projects/:id/issues`
 - `GET /projects/:id/issues/:issue_id`

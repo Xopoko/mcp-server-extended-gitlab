@@ -573,6 +573,110 @@ export function createApp() {
     }
   });
 
+  app.get('/projects', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(await svc.listProjects(req.query));
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.get('/projects/search', async (req, res, next: NextFunction) => {
+    try {
+      const q = typeof req.query.q === 'string' ? req.query.q : '';
+      const svc = new GitLabService();
+      res.json(await svc.searchProjects(q));
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.get('/projects/:id/releases', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(await svc.listReleases(req.params.id));
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.get('/projects/:id/releases/:tag', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(await svc.getRelease(req.params.id, req.params.tag));
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.post('/projects/:id/releases', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      const release = await svc.createRelease(req.params.id, req.body);
+      res.status(201).json(release);
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.put('/projects/:id/releases/:tag', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(await svc.updateRelease(req.params.id, req.params.tag, req.body));
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.delete('/projects/:id/releases/:tag', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      await svc.deleteRelease(req.params.id, req.params.tag);
+      res.status(204).end();
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.get('/projects/:id/tags', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(await svc.listTags(req.params.id));
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.get('/projects/:id/tags/:tag', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(await svc.getTag(req.params.id, req.params.tag));
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.post('/projects/:id/tags', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      const tag = await svc.createTag(req.params.id, req.body);
+      res.status(201).json(tag);
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.delete('/projects/:id/tags/:tag', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      await svc.deleteTag(req.params.id, req.params.tag);
+      res.status(204).end();
+    } catch (err) {
+      next(err);
+    }
+  });
+
   // Get project metadata
   app.get('/projects/:id', async (req, res, next: NextFunction) => {
     try {
