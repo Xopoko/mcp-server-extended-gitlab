@@ -90,8 +90,7 @@ export class GitLabService {
   }
 
   async searchProjects(query: string) {
-    const { data } = await this.client.get('/projects', { params: { search: query } });
-    return data;
+    return this.listProjects({ search: query });
   }
 
   async listDiscussions(projectId: string | number, mrIid: string | number) {
