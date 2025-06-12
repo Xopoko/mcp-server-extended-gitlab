@@ -11,6 +11,48 @@ export function createApp() {
     res.status(200).json({ status: 'ok' });
   });
 
+  app.post('/groups', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      const group = await svc.createGroup(req.body);
+      res.status(201).json(group);
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.get('/groups/:id', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(await svc.getGroup(req.params.id));
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.delete('/groups/:id', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      const result = await svc.deleteGroup(req.params.id);
+      if (result) {
+        res.status(202).json(result);
+      } else {
+        res.status(202).end();
+      }
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.get('/groups/:id/members', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(await svc.listGroupMembers(req.params.id));
+    } catch (err) {
+      next(err);
+    }
+  });
+
   // List merge requests
   app.get('/projects/:id/merge_requests', async (req, res, next: NextFunction) => {
     try {
@@ -177,6 +219,44 @@ export function createApp() {
       const svc = new GitLabService();
       const issue = await svc.createIssue(req.params.id, req.body);
       res.status(201).json(issue);
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.get('/projects/:id/issues/:iid', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(await svc.getIssue(req.params.id, req.params.iid));
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.put('/projects/:id/issues/:iid', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(
+        await svc.updateIssue(req.params.id, req.params.iid, req.body),
+      );
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.put('/projects/:id/issues/:iid/close', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(await svc.closeIssue(req.params.id, req.params.iid));
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.put('/projects/:id/issues/:iid/reopen', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(await svc.reopenIssue(req.params.id, req.params.iid));
     } catch (err) {
       next(err);
     }
@@ -440,11 +520,15 @@ export function createApp() {
     const id = randomUUID();
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Connection', 'keep-alive');
     res.flushHeaders();
 
     // inform client of the message endpoint
     res.write(`event: endpoint\n`);
     res.write(`data: /messages/${id}\n\n`);
+    if (typeof (res as any).flush === 'function') {
+      (res as any).flush();
+    }
 
     const keepAlive = setInterval(() => {
       res.write(`: keep-alive ${Date.now()}\n\n`);
@@ -467,6 +551,9 @@ export function createApp() {
     }
     client.res.write(`event: message\n`);
     client.res.write(`data: ${JSON.stringify(req.body)}\n\n`);
+    if (typeof (client.res as any).flush === 'function') {
+      (client.res as any).flush();
+    }
     res.status(204).end();
   });
 

@@ -234,6 +234,44 @@ export class GitLabService {
     return data;
   }
 
+  async getIssue(
+    projectId: string | number,
+    issueIid: string | number,
+  ): Promise<IssueResponse> {
+    const { data } = await this.client.get(
+      `/projects/${projectId}/issues/${issueIid}`,
+    );
+    return data;
+  }
+
+  async updateIssue(
+    projectId: string | number,
+    issueIid: string | number,
+    payload: Record<string, unknown>,
+  ): Promise<IssueResponse> {
+    const { data } = await this.client.put(
+      `/projects/${projectId}/issues/${issueIid}`,
+      payload,
+    );
+    return data;
+  }
+
+  async closeIssue(projectId: string | number, issueIid: string | number) {
+    const { data } = await this.client.put(
+      `/projects/${projectId}/issues/${issueIid}`,
+      { state_event: 'close' },
+    );
+    return data;
+  }
+
+  async reopenIssue(projectId: string | number, issueIid: string | number) {
+    const { data } = await this.client.put(
+      `/projects/${projectId}/issues/${issueIid}`,
+      { state_event: 'reopen' },
+    );
+    return data;
+  }
+
   async getFile(projectId: string | number, filePath: string, ref: string) {
     const encodedPath = encodeURIComponent(filePath);
     const { data } = await this.client.get(
@@ -347,6 +385,26 @@ export class GitLabService {
       `/projects/${projectId}/merge_requests/${mrIid}`,
       payload,
     );
+    return data;
+  }
+
+  async createGroup(payload: Record<string, unknown>) {
+    const { data } = await this.client.post('/groups', payload);
+    return data;
+  }
+
+  async getGroup(groupId: string | number) {
+    const { data } = await this.client.get(`/groups/${groupId}`);
+    return data;
+  }
+
+  async deleteGroup(groupId: string | number) {
+    const { data } = await this.client.delete(`/groups/${groupId}`);
+    return data;
+  }
+
+  async listGroupMembers(groupId: string | number) {
+    const { data } = await this.client.get(`/groups/${groupId}/members`);
     return data;
   }
 }

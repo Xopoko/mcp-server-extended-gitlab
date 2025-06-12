@@ -167,6 +167,14 @@ The server exposes the following endpoints:
 - `GET /projects/:id/pipelines/:pipeline_id`
 - `GET /projects/:id/issues`
 - `POST /projects/:id/issues`
+- `GET /projects/:id/issues/:issue_id`
+- `PUT /projects/:id/issues/:issue_id`
+- `PUT /projects/:id/issues/:issue_id/close`
+- `PUT /projects/:id/issues/:issue_id/reopen`
+- `POST /groups`
+- `GET /groups/:id`
+- `DELETE /groups/:id`
+- `GET /groups/:id/members`
 
 Additionally `/tool/hello` demonstrates how to add custom tools.
 
