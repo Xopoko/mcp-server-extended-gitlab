@@ -139,6 +139,75 @@ npm run build      # run "tsc && mcp-build" to compile and prepare ./dist
 npm start          # run compiled server
 ```
 
+## MCP Client Integrations
+
+This server can be used by any Model‑Context‑Protocol desktop application.
+
+### Running the server
+
+Start the server using the SSE transport so that clients can connect:
+
+```bash
+npm run start:mcp
+```
+
+It listens on port `3000` (or `PORT`). Ensure `GITLAB_BASE_URL` and `GITLAB_TOKEN` are configured.
+
+### Claude Desktop
+
+1. Launch the server as shown above.
+2. Edit your Claude Desktop configuration file:
+   - **macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
+   - **Windows:** `%APPDATA%/Claude/claude_desktop_config.json`
+3. Add an entry under `"mcpServers"`:
+
+```json
+{
+  "mcpServers": {
+    "gitlab-server": {
+      "command": "node",
+      "args": ["/absolute/path/to/mcp-server-extended-gitlab/dist/mcpServer.js"]
+    }
+  }
+}
+```
+
+After publishing the project to npm you can instead use:
+
+```json
+{
+  "mcpServers": {
+    "gitlab-server": {
+      "command": "npx",
+      "args": ["mcp-server-extended-gitlab"]
+    }
+  }
+}
+```
+
+### Cursor
+
+1. Run `npm run start:mcp`.
+2. Create or edit `mcp_servers.json` in your Cursor data directory:
+   - **macOS:** `~/Library/Application Support/Cursor/mcp_servers.json`
+   - **Windows:** `%APPDATA%/Cursor/mcp_servers.json`
+3. Add:
+
+```json
+{
+  "gitlab-server": {
+    "type": "sse",
+    "url": "http://localhost:3000"
+  }
+}
+```
+
+Restart Cursor to load the configuration.
+
+### Other MCP clients
+
+Most MCP-capable applications follow the same pattern: point them to `http://localhost:3000` (or your chosen address) and specify the transport type (SSE or STDIO) according to your client's documentation.
+
 ---
 
 ## 🤝 Contributing
