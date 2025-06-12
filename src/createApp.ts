@@ -71,6 +71,110 @@ export function createApp() {
     }
   });
 
+  app.get(
+    '/groups/:id/epics/:epic_id/discussions',
+    async (req, res, next: NextFunction) => {
+      try {
+        const svc = new GitLabService();
+        res.json(
+          await svc.listEpicDiscussions(req.params.id, req.params.epic_id),
+        );
+      } catch (err) {
+        next(err);
+      }
+    },
+  );
+
+  app.get(
+    '/groups/:id/epics/:epic_id/discussions/:discussionId',
+    async (req, res, next: NextFunction) => {
+      try {
+        const svc = new GitLabService();
+        res.json(
+          await svc.getEpicDiscussion(
+            req.params.id,
+            req.params.epic_id,
+            req.params.discussionId,
+          ),
+        );
+      } catch (err) {
+        next(err);
+      }
+    },
+  );
+
+  app.post(
+    '/groups/:id/epics/:epic_id/discussions',
+    async (req, res, next: NextFunction) => {
+      try {
+        const svc = new GitLabService();
+        const discussion = await svc.createEpicDiscussion(
+          req.params.id,
+          req.params.epic_id,
+          req.body,
+        );
+        res.status(201).json(discussion);
+      } catch (err) {
+        next(err);
+      }
+    },
+  );
+
+  app.post(
+    '/groups/:id/epics/:epic_id/discussions/:discussionId/notes',
+    async (req, res, next: NextFunction) => {
+      try {
+        const svc = new GitLabService();
+        const note = await svc.addNoteToEpicDiscussion(
+          req.params.id,
+          req.params.epic_id,
+          req.params.discussionId,
+          req.body,
+        );
+        res.status(201).json(note);
+      } catch (err) {
+        next(err);
+      }
+    },
+  );
+
+  app.put(
+    '/groups/:id/epics/:epic_id/discussions/:discussionId/notes/:noteId',
+    async (req, res, next: NextFunction) => {
+      try {
+        const svc = new GitLabService();
+        const note = await svc.updateEpicDiscussion(
+          req.params.id,
+          req.params.epic_id,
+          req.params.discussionId,
+          req.params.noteId,
+          req.body,
+        );
+        res.json(note);
+      } catch (err) {
+        next(err);
+      }
+    },
+  );
+
+  app.delete(
+    '/groups/:id/epics/:epic_id/discussions/:discussionId/notes/:noteId',
+    async (req, res, next: NextFunction) => {
+      try {
+        const svc = new GitLabService();
+        await svc.deleteEpicDiscussion(
+          req.params.id,
+          req.params.epic_id,
+          req.params.discussionId,
+          req.params.noteId,
+        );
+        res.status(204).end();
+      } catch (err) {
+        next(err);
+      }
+    },
+  );
+
   app.get('/projects/:id/access_tokens', async (req, res, next: NextFunction) => {
     try {
       const svc = new GitLabService();
