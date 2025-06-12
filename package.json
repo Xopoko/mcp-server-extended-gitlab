@@ -53,5 +53,8 @@
   "homepage": "https://github.com/Xopoko/mcp-server-extended-gitlab#readme",
   "bin": {
     "mcp-server-extended-gitlab": "dist/index.js"
-  }
+  },
+  "files": [
+    "dist"
+  ]
 }
