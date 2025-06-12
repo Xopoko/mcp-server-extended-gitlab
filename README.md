@@ -63,6 +63,28 @@ Add this server to your MCP client configuration so tools are discoverable in
 Save the snippet as `claude-desktop.mcp.json` or `cursor.mcp.json` in each
 app's configuration directory.
 
+### Running this server via npx
+
+You can also launch **MCP Server Extended GitLab** on demand using an MCP server
+entry like the following:
+
+```json
+{
+  "gitlab-mcp": {
+    "command": "npx",
+    "args": [
+      "-y",
+      "mcp-server-extended-gitlab"
+    ],
+    "env": {
+      "GITLAB_BASE_URL": "https://gitlab.example.com/api/v4",
+      "GITLAB_TOKEN": "your-private-token"
+    }
+  }
+}
+```
+
+
 ---
 
 ## 📂 Project Structure
