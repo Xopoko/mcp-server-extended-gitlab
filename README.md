@@ -165,6 +165,12 @@ The server exposes the following endpoints:
 - `GET /projects/:id/commits`
 - `GET /projects/:id/pipelines`
 - `GET /projects/:id/pipelines/:pipeline_id`
+- `POST /projects/:id/pipelines`
+- `POST /projects/:id/pipelines/:pipeline_id/cancel`
+- `POST /projects/:id/pipelines/:pipeline_id/retry`
+- `DELETE /projects/:id/pipelines/:pipeline_id`
+- `GET /projects/:id/pipelines/:pipeline_id/jobs`
+- `GET /projects/:id/pipelines/:pipeline_id/artifacts`
 - `GET /projects/:id/issues`
 - `POST /projects/:id/issues`
 
