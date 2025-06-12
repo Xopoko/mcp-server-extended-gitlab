@@ -593,6 +593,90 @@ export function createApp() {
     }
   });
 
+  app.get('/projects/:id/snippets/:snippetId/discussions', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(await svc.listSnippetDiscussions(req.params.id, req.params.snippetId));
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.get('/projects/:id/snippets/:snippetId/discussions/:discussionId', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(
+        await svc.getSnippetDiscussion(
+          req.params.id,
+          req.params.snippetId,
+          req.params.discussionId,
+        ),
+      );
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.post('/projects/:id/snippets/:snippetId/discussions', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      const discussion = await svc.createSnippetDiscussion(
+        req.params.id,
+        req.params.snippetId,
+        req.body,
+      );
+      res.status(201).json(discussion);
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.post('/projects/:id/snippets/:snippetId/discussions/:discussionId/notes', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      const note = await svc.addNoteToSnippetDiscussion(
+        req.params.id,
+        req.params.snippetId,
+        req.params.discussionId,
+        req.body,
+      );
+      res.status(201).json(note);
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.put('/projects/:id/snippets/:snippetId/discussions/:discussionId/notes/:noteId', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      const note = await svc.updateSnippetDiscussion(
+        req.params.id,
+        req.params.snippetId,
+        req.params.discussionId,
+        req.params.noteId,
+        req.body,
+      );
+      res.json(note);
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  app.delete('/projects/:id/snippets/:snippetId/discussions/:discussionId/notes/:noteId', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      await svc.deleteSnippetDiscussion(
+        req.params.id,
+        req.params.snippetId,
+        req.params.discussionId,
+        req.params.noteId,
+      );
+      res.status(204).end();
+    } catch (err) {
+      next(err);
+    }
+  });
+
   // List discussions of a merge request
   app.get('/projects/:id/merge_requests/:iid/discussions', async (req, res, next: NextFunction) => {
     try {
