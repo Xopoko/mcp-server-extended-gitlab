@@ -37,4 +37,51 @@ describe('GitLab issues endpoints', () => {
     expect(res.status).toBe(201);
     expect(res.body).toEqual(mockData);
   });
+it('returns a single issue', async () => {
+  const mockData = { id: 3, title: 'Issue3' };
+  nock(base)
+    .get('/api/v4/projects/123/issues/3')
+    .reply(200, mockData);
+
+  const res = await request(app).get('/projects/123/issues/3');
+  expect(res.status).toBe(200);
+  expect(res.body).toEqual(mockData);
+});
+
+it('updates an issue', async () => {
+  const payload = { title: 'Updated issue' };
+  const mockData = { id: 3, title: 'Updated issue' };
+  nock(base)
+    .put('/api/v4/projects/123/issues/3', payload)
+    .reply(200, mockData);
+
+  const res = await request(app)
+    .put('/projects/123/issues/3')
+    .send(payload)
+    .set('Content-Type', 'application/json');
+  expect(res.status).toBe(200);
+  expect(res.body).toEqual(mockData);
+});
+
+it('closes an issue', async () => {
+  const mockData = { id: 3, state: 'closed' };
+  nock(base)
+    .put('/api/v4/projects/123/issues/3', { state_event: 'close' })
+    .reply(200, mockData);
+
+  const res = await request(app).put('/projects/123/issues/3/close');
+  expect(res.status).toBe(200);
+  expect(res.body).toEqual(mockData);
+});
+
+it('reopens an issue', async () => {
+  const mockData = { id: 3, state: 'reopened' };
+  nock(base)
+    .put('/api/v4/projects/123/issues/3', { state_event: 'reopen' })
+    .reply(200, mockData);
+
+  const res = await request(app).put('/projects/123/issues/3/reopen');
+  expect(res.status).toBe(200);
+  expect(res.body).toEqual(mockData);
+});
 });
