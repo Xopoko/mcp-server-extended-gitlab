@@ -148,6 +148,12 @@ The server exposes the following endpoints:
 | GET | `/projects/:id/branches/:branch` |
 | DELETE | `/projects/:id/branches/:branch` |
 | GET | `/projects/:id/commits` |
+| GET | `/projects/:id/repository/commits/:commit_id/discussions` |
+| GET | `/projects/:id/repository/commits/:commit_id/discussions/:discussion_id` |
+| POST | `/projects/:id/repository/commits/:commit_id/discussions` |
+| POST | `/projects/:id/repository/commits/:commit_id/discussions/:discussion_id/notes` |
+| PUT | `/projects/:id/repository/commits/:commit_id/discussions/:discussion_id/notes/:note_id` |
+| DELETE | `/projects/:id/repository/commits/:commit_id/discussions/:discussion_id/notes/:note_id` |
 | GET | `/projects/:id/pipelines` |
 | GET | `/projects/:id/pipelines/:pipeline_id` |
 | POST | `/projects/:id/pipelines` |
