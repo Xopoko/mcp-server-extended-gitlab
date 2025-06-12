@@ -1,9 +1,9 @@
-# MCP Server TypeScript Template
+# MCP Server Extended GitLab
 
-A minimal, **test-driven** starter kit for building [Model-Context-Protocol](https://github.com/modelcontextprotocol/) (MCP) servers in TypeScript.
+A small server exposing selected GitLab REST API endpoints as tools for the [Model-Context-Protocol](https://github.com/modelcontextprotocol/). It is built with TypeScript and tested with Jest.
 
-| 🔖 Version | ![npm](https://img.shields.io/badge/template-v1.0.0-blue) |
-|-----------|-----------------------------------------------------------|
+| 🔖 Version | ![npm](https://img.shields.io/badge/project-v1.0.0-blue) |
+|-----------|-----------------------------------------------|
 | 🛠 Build  | `npm run build` |
 | 🧪 Tests  | `npm test` |
 | 📄 License| MIT |
@@ -12,37 +12,36 @@ A minimal, **test-driven** starter kit for building [Model-Context-Protocol](htt
 
 ## ✨ Features
 
-* **TypeScript 4+** with strict compiler settings.
-* **Express 5** HTTP server scaffold.
-* **TDD by default** – Jest + ts-jest pre-configured, first green tests included.
-* **Hot-reload** development via `nodemon` + `ts-node`.
-* **Local SDK link** – depends on the MCP TypeScript SDK through:
-  ```json
-  "dependencies": {
-    "@modelcontextprotocol/sdk": "file:../typescript-sdk"
-  }
-  ```
-  Replace with the published package name/version when appropriate.
-* Example **/health** and **/tool/hello** routes (with tests) demonstrate how to extend.
+* **TypeScript 5** with strict compiler options.
+* **Express 5** server scaffold.
+* **GitLab integration** for merge requests, branches, commits, discussions and file content.
+* **TDD-first** workflow – Jest + ts-jest preconfigured.
+* **Hot reload** in development via `nodemon`.
+* Uses the MCP TypeScript SDK via a local path dependency.
 
 ---
 
 ## 🚀 Quick Start
 
 ```bash
-# Clone or copy the template directory
-$ cd /a0/work_dir
-$ cp -r mcp-server-typescript-template my-mcp-server && cd my-mcp-server
-
 # Install dependencies
-$ npm install
+npm install
 
-# Run the test suite (should be green)
-$ npm test
+# Run tests
+npm test
 
-# Start dev server with hot-reload
-$ npm run dev
-# → http://localhost:3000/health  ⇒  {"status":"ok"}
+# Start dev server with hot reload
+npm run dev
+# -> http://localhost:3000/health  => {"status":"ok"}
+```
+
+### Environment Variables
+
+Set the following variables to connect to your GitLab instance:
+
+```bash
+GITLAB_BASE_URL=https://gitlab.example.com/api/v4
+GITLAB_TOKEN=your-private-token
 ```
 
 ---
@@ -51,13 +50,11 @@ $ npm run dev
 
 ```
 ├── src
-│   ├── bootstrapServer.ts   # createApp() – Express factory
-│   ├── server.ts            # production entry (npm start)
-│   └── tools                # ← add your tool handlers here (optional)
-├── tests
-│   ├── health.test.ts       # /health integration test
-│   └── hello.test.ts        # /tool/hello example test
-├── dist                     # compiled JS (npm run build)
+│   ├── createApp.ts         # Express factory with GitLab routes
+│   ├── bootstrapServer.ts   # hello tool example
+│   └── server.ts            # production entry (npm start)
+├── tests                    # Jest test suites
+├── dist                     # compiled JS output
 ├── jest.config.js           # Jest/ts-jest settings
 ├── tsconfig.json            # TypeScript compiler options
 └── package.json             # scripts & deps
@@ -65,52 +62,9 @@ $ npm run dev
 
 ---
 
-## 🧪 TDD Workflow
+## Available GitLab Routes
 
-1. **Red** – write a failing test in `tests/`.
-2. **Green** – implement the minimal code in `src/` to pass it.
-3. **Refactor** – clean up & commit.
-
-Example (already implemented):
-```ts
-// tests/hello.test.ts
-request(app)
-  .post('/tool/hello')
-  .send({ name: 'Alice' })
-  .expect(200, { greeting: 'Hello, Alice!' });
-```
-
----
-
-## 🛠 Scripts
-
-| Command            | Purpose                                   |
-|--------------------|-------------------------------------------|
-| `npm test`         | Run Jest test suite                       |
-| `npm run dev`      | Start server with hot-reload              |
-| `npm run build`    | Compile TypeScript → `dist/`              |
-| `npm start`        | Run compiled server from `dist/`          |
-
----
-
-## 🔌 Extending with Tools
-
-1. Define a new route inside `createApp()` **or** mount a router under `/tool/*`.
-2. Optionally leverage the MCP SDK helpers (`ToolDefinition`, etc.).
-3. Add a matching test case.
-
-```ts
-// src/tools/myTool.ts (example)
-  export function registerMyTool(app: express.Express) {
-    app.post('/tool/myTool', (req, res) => {
-      // tool logic …
-    });
-  }
-```
-
-## GitLab Routes
-
-The server exposes a subset of GitLab REST API endpoints:
+The server exposes the following endpoints:
 
 - `GET /projects/:id/merge_requests`
 - `GET /projects/:id/merge_requests/:iid/discussions`
@@ -118,25 +72,25 @@ The server exposes a subset of GitLab REST API endpoints:
 - `GET /projects/:id/branches`
 - `GET /projects/:id/commits`
 
+Additionally `/tool/hello` demonstrates how to add custom tools.
+
 ---
 
 ## 🏗 Building & Deployment
 
 ```bash
-npm run build          # compiles to ./dist
-node dist/server.js    # or npm start
+npm run build      # compile to ./dist
+npm start          # run compiled server
 ```
-
-A simple Dockerfile can be added if containerisation is required.
 
 ---
 
 ## 🤝 Contributing
 
-Issues and PRs are welcome! Please adhere to the existing coding style and include tests for new features.
+Issues and PRs are welcome! Please follow the existing coding style and include tests for new functionality.
 
 ---
 
 ## 📜 License
 
-This template is released under the **MIT License**.
+Released under the **MIT License**.
