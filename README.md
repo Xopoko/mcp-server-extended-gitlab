@@ -107,7 +107,9 @@ entry like the following:
 
 The server exposes the following endpoints:
 
+- `GET /projects/:id`
 - `GET /projects/:id/merge_requests`
+- `GET /projects/:id/merge_requests/:iid`
 - `GET /projects/:id/merge_requests/:iid/discussions`
 - `GET /projects/:id/files/<path>?ref=<branch>`
 - `GET /projects/:id/branches`

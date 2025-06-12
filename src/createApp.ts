@@ -20,6 +20,16 @@ export function createApp() {
     }
   });
 
+  // Get a single merge request
+  app.get('/projects/:id/merge_requests/:iid', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(await svc.getMergeRequest(req.params.id, req.params.iid));
+    } catch (err) {
+      next(err);
+    }
+  });
+
   // List branches of a project
   app.get('/projects/:id/branches', async (req, res, next: NextFunction) => {
     try {
@@ -60,6 +70,16 @@ export function createApp() {
       const svc = new GitLabService();
       const content = await svc.getFile(projectId, filePath, ref);
       res.type('text/plain').send(content);
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  // Get project metadata
+  app.get('/projects/:id', async (req, res, next: NextFunction) => {
+    try {
+      const svc = new GitLabService();
+      res.json(await svc.getProject(req.params.id));
     } catch (err) {
       next(err);
     }
